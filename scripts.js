@@ -1,3 +1,7 @@
+/* ================================
+   VIDEO ARCHIVE SECTION
+================================ */
+
 const archiveVideo = document.getElementById("archiveVideo");
 const videoTitle = document.getElementById("videoTitle");
 const videoDate = document.getElementById("videoDate");
@@ -30,6 +34,88 @@ videoButtons.forEach((button) => {
     button.classList.add("active");
   });
 });
+
+/* ================================
+  AUDIO CARD SECTION
+================================ */
+
+const track = document.querySelector(".audio-carousel-track");
+const slides = Array.from(document.querySelectorAll(".audio-slide"));
+const prevBtn = document.querySelector(".audio-carousel-arrow.left");
+const nextBtn = document.querySelector(".audio-carousel-arrow.right");
+
+let index = 2; // start after clones
+
+// --- CLONE FIRST + LAST FOR LOOP ---
+const firstClones = slides.slice(0, 2).map(slide => slide.cloneNode(true));
+const lastClones = slides.slice(-2).map(slide => slide.cloneNode(true));
+
+// add clones
+lastClones.forEach(clone => track.prepend(clone));
+firstClones.forEach(clone => track.append(clone));
+
+const allSlides = document.querySelectorAll(".audio-slide");
+
+// --- POSITION SETUP ---
+function getStep() {
+  const slide = allSlides[0];
+  const gap = parseInt(getComputedStyle(track).gap) || 0;
+  return slide.offsetWidth + gap;
+}
+
+function moveToIndex(animate = true) {
+  const step = getStep();
+
+  if (!animate) {
+    track.style.transition = "none";
+  } else {
+    track.style.transition = "transform 0.45s ease";
+  }
+
+  track.style.transform = `translateX(-${index * step}px)`;
+}
+
+// initial position
+moveToIndex(false);
+
+// --- NEXT ---
+nextBtn.addEventListener("click", () => {
+  index++;
+  moveToIndex(true);
+});
+
+// --- PREV ---
+prevBtn.addEventListener("click", () => {
+  index--;
+  moveToIndex(true);
+});
+
+// --- LOOP FIX (NO VISIBLE JUMP) ---
+track.addEventListener("transitionend", () => {
+  const total = allSlides.length;
+
+  // reached fake end → snap to real start
+  if (index >= total - 2) {
+    index = 2;
+    moveToIndex(false);
+  }
+
+  // reached fake start → snap to real end
+  if (index <= 1) {
+    index = total - 4;
+    moveToIndex(false);
+  }
+});
+
+// --- RESPONSIVE FIX ---
+window.addEventListener("resize", () => {
+  moveToIndex(false);
+});
+
+/* ================================
+   UNLOCK / ACCESS CODE SECTION
+================================ */
+
 const codeInput = document.getElementById("accessCode0");
 const unlockBtn = document.getElementById("unlockBtn");
 const clearBtn = document.getElementById("clearBtn");
@@ -91,6 +177,11 @@ codeInput.addEventListener("input", updateSlots);
 unlockBtn.addEventListener("click", checkCode);
 clearBtn.addEventListener("click", clearCode);
 
+
+/* ================================
+   UNLOCK KEYBOARD INPUT SECTION
+================================ */
+
 /* Let user type anywhere while unlock panel is visible */
 document.addEventListener("keydown", (event) => {
   if (lockedState.classList.contains("hidden")) return;
@@ -113,10 +204,21 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+
+/* ================================
+   UNLOCK PANEL FOCUS SECTION
+================================ */
+
 /* Focus hidden input when user clicks the panel */
 lockedState.addEventListener("click", () => {
   codeInput.focus();
 });
+
+
+/* ================================
+   PROFILE CAROUSEL SECTION
+================================ */
+
 const profileTrack = document.getElementById("profile-Track");
 const profileSlides = document.querySelectorAll(".profile-slide");
 const prevProfileBtn = document.getElementById("prevProfile");
