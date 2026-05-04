@@ -356,7 +356,7 @@ if (
 }
 
 document.querySelectorAll(".vote-btn").forEach((button) => {
-  button.addEventListener("click", async () => {
+  button.onclick = async () => {
     const card = button.closest(".vote-card");
     const trackId = card.dataset.track;
 
@@ -369,6 +369,10 @@ document.querySelectorAll(".vote-btn").forEach((button) => {
     });
 
     const data = await res.json();
+
     console.log(data);
-  });
+
+    // OPTIONAL: update UI
+    button.innerText = `VOTED (${data.votes})`;
+  };
 });
