@@ -1569,14 +1569,19 @@ transition: opacity 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
 
   /* HERO */
 
- .hero-section {
-  min-height: 100svh;
-  align-items: flex-end;
-  padding: 100px 0 32px;
+.hero-section {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.38),
+      rgba(0, 0, 0, 0.42)
+    ),
+    url("https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/images/hero/CMR_EYE_MOBILE.png");
 
   background-size: cover;
-  background-position: center top; /* key fix */
-  }
+  background-position: center top;
+  background-repeat: no-repeat;
+}
 
   .hero-content {
     max-width: 100%;
