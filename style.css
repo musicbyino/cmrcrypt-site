@@ -1745,7 +1745,7 @@ transition: opacity 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
   /* ABOUT */
 
   .about-image {
-    max-width: 100%;
+    max-width: 50%;
   }
 
   /* PROFILE CAROUSEL — MOBILE SWIPE */
