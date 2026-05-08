@@ -1779,18 +1779,18 @@ transition: opacity 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
 
 .carousel-viewport {
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .carousel-track {
-  width: 100%;
+  display: flex;
 }
 
 .profile-slide {
+  flex: 0 0 100%;
   min-width: 100%;
   max-width: 100%;
-  flex: 0 0 100%;
+}
 }
 
 .profile-card {
