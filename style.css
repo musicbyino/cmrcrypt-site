@@ -1303,83 +1303,84 @@ section {
   align-items: center;
   gap: 18px;
   margin-top: 24px;
-  width: 100%; 
-  min-height: 470px;
-  
-}
-.carousel-viewport {
-  overflow: hidden;
   width: 100%;
+  min-height: 470px;
 }
+
+.carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
 .carousel-track {
-  display: flex; 
+  display: flex;
   transition: transform 0.45s ease;
   will-change: transform;
 }
+
 .profile-slide {
+  flex: 0 0 100%;
   min-width: 100%;
-  flex-shrink: 0;
-  
+  max-width: 100%;
 }
+
 .profile-card {
   display: flex;
   align-items: flex-start;
   gap: 28px;
   max-width: 1100px;
   margin-left: 20px;
-  
 }
+
 .profile-image {
   width: 390px;
   max-width: 390px;
   height: 450px;
   margin: 20px 0;
-  
   padding: 10px;
   background: #000000;
   flex-shrink: 0;
   box-sizing: border-box;
-   box-shadow:
+  box-shadow:
     0 0 18px rgba(0, 255, 136, 0.4);
-
 }
+
 .profile-image img {
   display: block;
   width: 100%;
-  height:100%;
+  height: 100%;
   object-fit: cover;
 }
+
 .profile-text {
   max-width: 550px;
   padding-top: 6px;
 }
+
 .profile-text p {
   margin: 0 0 22px 0;
   line-height: 1.7;
 }
+
 .carousel-arrow {
-background: none;
-border: none;
-color: #ffffff;
-font-size: 3rem;
-cursor: pointer;
-padding: 0;
-line-height: 1;
-flex-shrink: 0;
-opacity: 0.6;
-transition: opacity 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
+  display: block;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 3rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
 }
+
 .carousel-arrow:hover {
   color: #00ff88;
   opacity: 1;
   transform: scale(1.4);
   text-shadow: 0 0 4px #00ff88, 0 0 8px #00ff88, 0 0 16px #00ff88;
-}
-.carousel-arrow.left {
-  left: 10px;
-}
-.carousel-arrow.right {
-  right: 10px;
 }
 /* =========================
    CONTACT SECTION
@@ -1769,11 +1770,11 @@ transition: opacity 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
     line-height: 1.6;
   }
 
-  /* PROFILE CAROUSEL — MOBILE SWIPE */
-
+/* PROFILE CAROUSEL — MOBILE */
 
 .profile-carousel {
-  width: 100%;
+  display: block;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -1782,39 +1783,28 @@ transition: opacity 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
   overflow: hidden;
 }
 
-.carousel-track {
-  display: flex;
-}
-
-.profile-slide {
-  flex: 0 0 100%;
-  min-width: 100%;
-  max-width: 100%;
-}
-}
-
 .profile-card {
-  width: 100%;
-  max-width: 100%;
-  margin-left: 0;
   flex-direction: column;
+  gap: 16px;
+  margin-left: 0;
 }
 
 .profile-image {
   width: 100%;
   max-width: 360px;
   height: auto;
+  aspect-ratio: 13 / 15;
   margin: 14px auto;
 }
 
 .profile-text {
-  width: 100%;
   max-width: 100%;
+  padding-top: 0;
 }
 
-  .carousel-arrow {
-    display: none;
-  }
+.carousel-arrow {
+  display: none;
+}
 
   /* CONTACT */
 
