@@ -85,7 +85,6 @@ document.querySelectorAll(".vote-btn").forEach((button) => {
   button.onclick = async () => {
     const card = button.closest(".vote-card");
     const trackId = card.dataset.track;
-    const voteCount = card.querySelector(".vote-count");
 
     const res = await fetch("https://cmrcrypt-api.cmrcrypt.workers.dev/vote", {
       method: "POST",
@@ -96,19 +95,38 @@ document.querySelectorAll(".vote-btn").forEach((button) => {
     });
 
     const data = await res.json();
+    console.log(data);
 
-    voteCount.innerText = `Votes: ${data.votes}`;
+    updateVoteUI(data);
 
-    if (data.already_voted) {
-      button.innerText = "ALREADY VOTED";
-    } else {
-      button.innerText = "VOTED";
-    }
+    document.querySelectorAll(".vote-btn").forEach((btn) => {
+      btn.disabled = true;
+      btn.innerText = "VOTING LOCKED";
+    });
 
-    button.disabled = true;
+    button.innerText = data.already_voted ? "ALREADY VOTED" : "VOTED";
   };
 });
 
+function updateVoteUI(data) {
+  document.querySelectorAll(".vote-card").forEach((card) => {
+    const trackId = card.dataset.track;
+    const voteCount = card.querySelector(".vote-count");
+    const votePercent = card.querySelector(".vote-percent");
+    const voteBar = card.querySelector(".vote-bar-fill");
+
+    const trackResult = data.results.find((item) => item.track_id === trackId);
+    const votes = trackResult ? trackResult.votes : 0;
+
+    const percent =
+      data.total_votes > 0 ? Math.round((votes / data.total_votes) * 100) : 0;
+
+    voteCount.innerText = `Votes: ${votes}`;
+    votePercent.innerText = `${percent}%`;
+    voteBar.style.width = `${percent}%`;
+  });
+}
+}
 /* ================================
    VIDEO ARCHIVE
 ================================ */
