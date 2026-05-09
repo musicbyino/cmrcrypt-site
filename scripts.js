@@ -95,7 +95,6 @@ document.querySelectorAll(".vote-btn").forEach((button) => {
     });
 
     const data = await res.json();
-    console.log(data);
 
     updateVoteUI(data);
 
@@ -117,15 +116,14 @@ function updateVoteUI(data) {
 
     const trackResult = data.results.find((item) => item.track_id === trackId);
     const votes = trackResult ? trackResult.votes : 0;
-
-    const percent =
-      data.total_votes > 0 ? Math.round((votes / data.total_votes) * 100) : 0;
+    const percent = data.total_votes > 0
+      ? Math.round((votes / data.total_votes) * 100)
+      : 0;
 
     voteCount.innerText = `Votes: ${votes}`;
     votePercent.innerText = `${percent}%`;
     voteBar.style.width = `${percent}%`;
   });
-}
 }
 /* ================================
    VIDEO ARCHIVE
