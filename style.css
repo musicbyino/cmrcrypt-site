@@ -577,15 +577,8 @@ section {
     0 0 4px #00ff88,
     0 0 8px #00ff88,
     0 0 16px #00ff88;
+    
 }
-.audio-carousel {
-  overflow: hidden;
-}
-
-.audio-carousel-track {
-  touch-action: pan-y;
-}
-
 
 /* =========================
    AUDIO – MOBILE
