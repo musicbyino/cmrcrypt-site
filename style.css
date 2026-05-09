@@ -1353,13 +1353,54 @@ section {
 }
 
 .profile-text {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   max-width: 550px;
-  padding-top: 6px;
+  min-height: 450px;
+  padding: 20px 0;
 }
 
+.profile-text::before {
+ content: "";
+ position: absolute;
+ inset: 0;
+
+ background: 
+   repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.015) 0px,
+    rgba(255,255,255,0.025) 1px,
+    transparent 2px,
+    transparent 4px
+   );
+   
+   opacity: 0.045;
+   pointer-events: none;
+}
 .profile-text p {
-  margin: 0 0 22px 0;
+  width: 100%;
+  max-width: 520px;
+
+  margin: 0 0 22px;
   line-height: 1.7;
+ 
+  color: #00ff11;
+
+  text-shadow:
+  0 0 6px rgba(0, 255, 136, 0.3),
+  0 0 16px rgba(0, 255, 136, 0.5);
+
+animation: textFlicker 1.5s steps(50) infinite;
+}
+.profile-node {
+  margin-bottom: 18px;
+  color: rgba(0, 255, 136, 0.7);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .carousel-arrow {
@@ -1381,6 +1422,54 @@ section {
   opacity: 1;
   transform: scale(1.4);
   text-shadow: 0 0 4px #00ff88, 0 0 8px #00ff88, 0 0 16px #00ff88;
+}
+
+@keyframes textFlicker {
+  0%, 100% {
+    opacity: 1;
+    color: #d8d8d8;
+
+    text-shadow:
+      0 0 2px rgba(0,255,136,0.08),
+      0 0 6px rgba(0,255,136,0.04);
+  }
+
+  8% {
+    opacity: 0.82;
+
+    text-shadow:
+      0 0 6px rgba(0,255,136,0.55),
+      0 0 16px rgba(0,255,136,0.35);
+  }
+
+  9% {
+    opacity: 1;
+  }
+
+  42% {
+    opacity: 0.9;
+
+    text-shadow:
+      0 0 5px rgba(0,255,136,0.42),
+      0 0 12px rgba(0,255,136,0.24);
+  }
+
+  43% {
+    opacity: 1;
+  }
+
+  71% {
+    opacity: 0.76;
+
+    text-shadow:
+      0 0 8px rgba(0,255,136,0.7),
+      0 0 22px rgba(0,255,136,0.4);
+  }
+
+  72% {
+    opacity: 1;
+  }
+}
 }
 /* =========================
    CONTACT SECTION
@@ -1798,8 +1887,16 @@ section {
 }
 
 .profile-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
   max-width: 100%;
-  padding-top: 0;
+
+  padding: 0 10px;
+  text-align: center;
 }
 
 .carousel-arrow {
