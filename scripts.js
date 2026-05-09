@@ -20,6 +20,10 @@
    AUDIO CAROUSEL
    Infinite arrows + desktop drag + mobile swipe
 ================================ */
+/* ================================
+   AUDIO CAROUSEL
+   Infinite arrows + mobile swipe
+================================ */
 
 const audioCarouselTrack = document.querySelector(".audio-carousel-track");
 const audioSlides = Array.from(document.querySelectorAll(".audio-slide"));
@@ -27,9 +31,8 @@ const audioPrevBtn = document.querySelector(".audio-carousel-arrow.left");
 const audioNextBtn = document.querySelector(".audio-carousel-arrow.right");
 
 let audioIndex = 2;
-let isDragging = false;
-let startX = 0;
-let currentTranslate = 0;
+let audioStartX = 0;
+let audioEndX = 0;
 
 if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn) {
   const firstClones = audioSlides.slice(0, 2).map((slide) => slide.cloneNode(true));
@@ -48,12 +51,42 @@ if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn
 
   function moveAudioCarousel(animate = true) {
     const step = getAudioStep();
-
     audioCarouselTrack.style.transition = animate ? "transform 0.45s ease" : "none";
     audioCarouselTrack.style.transform = `translateX(-${audioIndex * step}px)`;
   }
 
-  function handleLoopReset() {
+  function nextAudioSlide() {
+    audioIndex++;
+    moveAudioCarousel(true);
+  }
+
+  function prevAudioSlide() {
+    audioIndex--;
+    moveAudioCarousel(true);
+  }
+
+  audioNextBtn.addEventListener("click", nextAudioSlide);
+  audioPrevBtn.addEventListener("click", prevAudioSlide);
+
+  audioCarouselTrack.addEventListener("touchstart", (e) => {
+    audioStartX = e.touches[0].clientX;
+  });
+
+  audioCarouselTrack.addEventListener("touchend", (e) => {
+    audioEndX = e.changedTouches[0].clientX;
+
+    const swipeDistance = audioStartX - audioEndX;
+
+    if (swipeDistance > 50) {
+      nextAudioSlide();
+    }
+
+    if (swipeDistance < -50) {
+      prevAudioSlide();
+    }
+  });
+
+  audioCarouselTrack.addEventListener("transitionend", () => {
     const total = allAudioSlides.length;
 
     if (audioIndex >= total - 2) {
@@ -65,57 +98,6 @@ if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn
       audioIndex = total - 4;
       moveAudioCarousel(false);
     }
-  }
-
-  audioNextBtn.addEventListener("click", () => {
-    audioIndex++;
-    moveAudioCarousel(true);
-  });
-
-  audioPrevBtn.addEventListener("click", () => {
-    audioIndex--;
-    moveAudioCarousel(true);
-  });
-
-  audioCarouselTrack.addEventListener("transitionend", handleLoopReset);
-
-  /* DRAG / SWIPE START */
-  audioCarouselTrack.addEventListener("pointerdown", (e) => {
-    isDragging = true;
-    startX = e.clientX;
-    currentTranslate = -audioIndex * getAudioStep();
-
-    audioCarouselTrack.style.transition = "none";
-    audioCarouselTrack.setPointerCapture(e.pointerId);
-  });
-
-  audioCarouselTrack.addEventListener("pointermove", (e) => {
-    if (!isDragging) return;
-
-    const moveX = e.clientX - startX;
-    audioCarouselTrack.style.transform = `translateX(${currentTranslate + moveX}px)`;
-  });
-
-  audioCarouselTrack.addEventListener("pointerup", (e) => {
-    if (!isDragging) return;
-
-    isDragging = false;
-    const moveX = e.clientX - startX;
-    const swipeThreshold = 50;
-
-    if (moveX < -swipeThreshold) {
-      audioIndex++;
-    } else if (moveX > swipeThreshold) {
-      audioIndex--;
-    }
-
-    moveAudioCarousel(true);
-    audioCarouselTrack.releasePointerCapture(e.pointerId);
-  });
-
-  audioCarouselTrack.addEventListener("pointercancel", () => {
-    isDragging = false;
-    moveAudioCarousel(true);
   });
 
   window.addEventListener("resize", () => {
@@ -124,7 +106,6 @@ if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn
 
   moveAudioCarousel(false);
 }
-
 
 /* ================================
    VOTING
