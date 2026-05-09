@@ -577,7 +577,6 @@ section {
     0 0 4px #00ff88,
     0 0 8px #00ff88,
     0 0 16px #00ff88;
-    
 }
 
 /* =========================
@@ -1721,16 +1720,6 @@ animation: textFlicker .75s steps(50) infinite;
     border-color: #00ff88;
     box-shadow: 0 0 14px rgba(0, 255, 136, 0.4);
   }
-/* =========================
-   VOTING FILL SAFETY FIX
-   ========================= */
-
-.vote-meter .vote-fill {
-  display: block;
-  height: 100%;
-  background: #00ff88 !important;
-  box-shadow: 0 0 12px rgba(0, 255, 135, 0.65);
-}
 
 /* =========================================================
    RESPONSIVE SYSTEM — SINGLE CLEAN MOBILE/TABLET LAYER
