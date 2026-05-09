@@ -25,78 +25,96 @@
    Infinite arrows + mobile swipe
 ================================ */
 
+/* ================================
+   AUDIO CAROUSEL / INFINITE SWIPE
+================================ */
+
 const audioCarouselTrack = document.querySelector(".audio-carousel-track");
 const audioSlides = Array.from(document.querySelectorAll(".audio-slide"));
 const audioPrevBtn = document.querySelector(".audio-carousel-arrow.left");
 const audioNextBtn = document.querySelector(".audio-carousel-arrow.right");
+const audioViewport = document.querySelector(".audio-carousel-viewport");
 
-let audioIndex = 2;
-let audioStartX = 0;
-let audioEndX = 0;
+let currentAudioIndex = 1;
+let audioIsMoving = false;
 
-if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn) {
-  const firstClones = audioSlides.slice(0, 2).map((slide) => slide.cloneNode(true));
-  const lastClones = audioSlides.slice(-2).map((slide) => slide.cloneNode(true));
+if (
+  audioCarouselTrack &&
+  audioSlides.length > 0 &&
+  audioPrevBtn &&
+  audioNextBtn &&
+  audioViewport
+) {
+  const firstAudioClone = audioSlides[0].cloneNode(true);
+  const lastAudioClone = audioSlides[audioSlides.length - 1].cloneNode(true);
 
-  lastClones.forEach((clone) => audioCarouselTrack.prepend(clone));
-  firstClones.forEach((clone) => audioCarouselTrack.append(clone));
+  audioCarouselTrack.appendChild(firstAudioClone);
+  audioCarouselTrack.prepend(lastAudioClone);
 
-  const allAudioSlides = document.querySelectorAll(".audio-slide");
-
-  function getAudioStep() {
-    const slide = allAudioSlides[0];
-    const gap = parseInt(getComputedStyle(audioCarouselTrack).gap) || 0;
-    return slide.offsetWidth + gap;
-  }
+  const allAudioSlides = Array.from(
+    audioCarouselTrack.querySelectorAll(".audio-slide")
+  );
 
   function moveAudioCarousel(animate = true) {
-    const step = getAudioStep();
-    audioCarouselTrack.style.transition = animate ? "transform 0.45s ease" : "none";
-    audioCarouselTrack.style.transform = `translateX(-${audioIndex * step}px)`;
+    const viewportWidth = audioViewport.clientWidth;
+
+    audioCarouselTrack.style.transition = animate
+      ? "transform 0.45s ease"
+      : "none";
+
+    audioCarouselTrack.style.transform = `translateX(-${
+      currentAudioIndex * viewportWidth
+    }px)`;
   }
 
-  function nextAudioSlide() {
-    audioIndex++;
+  function goNextAudio() {
+    if (audioIsMoving) return;
+
+    audioIsMoving = true;
+    currentAudioIndex++;
     moveAudioCarousel(true);
   }
 
-  function prevAudioSlide() {
-    audioIndex--;
+  function goPrevAudio() {
+    if (audioIsMoving) return;
+
+    audioIsMoving = true;
+    currentAudioIndex--;
     moveAudioCarousel(true);
   }
 
-  audioNextBtn.addEventListener("click", nextAudioSlide);
-  audioPrevBtn.addEventListener("click", prevAudioSlide);
-
-  audioCarouselTrack.addEventListener("touchstart", (e) => {
-    audioStartX = e.touches[0].clientX;
-  });
-
-  audioCarouselTrack.addEventListener("touchend", (e) => {
-    audioEndX = e.changedTouches[0].clientX;
-
-    const swipeDistance = audioStartX - audioEndX;
-
-    if (swipeDistance > 50) {
-      nextAudioSlide();
-    }
-
-    if (swipeDistance < -50) {
-      prevAudioSlide();
-    }
-  });
+  audioNextBtn.addEventListener("click", goNextAudio);
+  audioPrevBtn.addEventListener("click", goPrevAudio);
 
   audioCarouselTrack.addEventListener("transitionend", () => {
-    const total = allAudioSlides.length;
-
-    if (audioIndex >= total - 2) {
-      audioIndex = 2;
+    if (currentAudioIndex === allAudioSlides.length - 1) {
+      currentAudioIndex = 1;
       moveAudioCarousel(false);
     }
 
-    if (audioIndex <= 1) {
-      audioIndex = total - 4;
+    if (currentAudioIndex === 0) {
+      currentAudioIndex = allAudioSlides.length - 2;
       moveAudioCarousel(false);
+    }
+
+    audioIsMoving = false;
+  });
+
+  let audioTouchStartX = 0;
+
+  audioViewport.addEventListener("touchstart", (event) => {
+    audioTouchStartX = event.changedTouches[0].screenX;
+  });
+
+  audioViewport.addEventListener("touchend", (event) => {
+    const audioTouchEndX = event.changedTouches[0].screenX;
+
+    if (audioTouchStartX - audioTouchEndX > 50) {
+      goNextAudio();
+    }
+
+    if (audioTouchEndX - audioTouchStartX > 50) {
+      goPrevAudio();
     }
   });
 
