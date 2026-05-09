@@ -1,33 +1,19 @@
 /* ================================
-   VIDEO ARCHIVE SECTION
+   HEADER / NAV
 ================================ */
 
-const archiveVideo = document.getElementById("archiveVideo");
-const videoTitle = document.getElementById("videoTitle");
-const videoDate = document.getElementById("videoDate");
-const videoDescription = document.getElementById("videoDescription");
-const videoButtons = document.querySelectorAll(".video-thumb-item");
-
-videoButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    archiveVideo.pause();
-    archiveVideo.src = button.dataset.video;
-    archiveVideo.poster = button.dataset.poster;
-    archiveVideo.load();
-    archiveVideo.play();
-
-    videoTitle.textContent = button.dataset.title;
-    videoDate.textContent = button.dataset.date;
-    videoDescription.textContent = button.dataset.description;
-
-    videoButtons.forEach((btn) => btn.classList.remove("active"));
-    button.classList.add("active");
-  });
-});
+/* No JS needed yet. */
 
 
 /* ================================
-   AUDIO CARD CAROUSEL SECTION
+   HERO
+================================ */
+
+/* No JS needed yet. */
+
+
+/* ================================
+   AUDIO CARD CAROUSEL
 ================================ */
 
 const audioCarouselTrack = document.querySelector(".audio-carousel-track");
@@ -49,20 +35,16 @@ if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn
   function getAudioStep() {
     const slide = allAudioSlides[0];
     const gap = parseInt(getComputedStyle(audioCarouselTrack).gap) || 0;
+
     return slide.offsetWidth + gap;
   }
 
   function moveAudioCarousel(animate = true) {
     const step = getAudioStep();
 
-    audioCarouselTrack.style.transition = animate
-      ? "transform 0.45s ease"
-      : "none";
-
+    audioCarouselTrack.style.transition = animate ? "transform 0.45s ease" : "none";
     audioCarouselTrack.style.transform = `translateX(-${audioIndex * step}px)`;
   }
-
-  moveAudioCarousel(false);
 
   audioNextBtn.addEventListener("click", () => {
     audioIndex++;
@@ -91,19 +73,76 @@ if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn
   window.addEventListener("resize", () => {
     moveAudioCarousel(false);
   });
+
+  moveAudioCarousel(false);
 }
 
 
 /* ================================
-   UNLOCK / ACCESS CODE SECTION
+   VOTING
+================================ */
+document.querySelectorAll(".vote-btn").forEach((button) => {
+  button.onclick = async () => {
+    const card = button.closest(".vote-card");
+    const trackId = card.dataset.track;
+    const voteCount = card.querySelector(".vote-count");
+
+    const res = await fetch("https://cmrcrypt-api.cmrcrypt.workers.dev/vote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ track_id: trackId }),
+    });
+
+    const data = await res.json();
+
+    voteCount.innerText = `Votes: ${data.votes}`;
+    button.innerText = "VOTED";
+    button.disabled = true;
+  };
+});
+
+/* ================================
+   VIDEO ARCHIVE
+================================ */
+
+const archiveVideo = document.getElementById("archiveVideo");
+const videoTitle = document.getElementById("videoTitle");
+const videoDate = document.getElementById("videoDate");
+const videoDescription = document.getElementById("videoDescription");
+const videoButtons = document.querySelectorAll(".video-thumb-item");
+
+if (archiveVideo && videoTitle && videoDate && videoDescription && videoButtons.length > 0) {
+  videoButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      archiveVideo.pause();
+      archiveVideo.src = button.dataset.video;
+      archiveVideo.poster = button.dataset.poster;
+      archiveVideo.load();
+      archiveVideo.play();
+
+      videoTitle.textContent = button.dataset.title;
+      videoDate.textContent = button.dataset.date;
+      videoDescription.textContent = button.dataset.description;
+
+      videoButtons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+    });
+  });
+}
+
+
+/* ================================
+   UNLOCK / ACCESS CODE
 ================================ */
 
 const codeInput = document.getElementById("accessCode0");
 const unlockBtn = document.getElementById("unlockBtn");
 const clearBtn = document.getElementById("clearBtn");
-const message = document.getElementById("unlockMessage");
+const unlockMessage = document.getElementById("unlockMessage");
 
-const slots = [
+const codeSlots = [
   document.getElementById("slot1"),
   document.getElementById("slot2"),
   document.getElementById("slot3"),
@@ -117,11 +156,11 @@ const audioTerminal = document.getElementById("audioTerminal");
 
 const CORRECT_CODE = "343343";
 
-if (codeInput && unlockBtn && clearBtn && message && lockedState && audioTerminal) {
+if (codeInput && unlockBtn && clearBtn && unlockMessage && lockedState && audioTerminal) {
   function updateSlots() {
     const value = codeInput.value;
 
-    slots.forEach((slot, index) => {
+    codeSlots.forEach((slot, index) => {
       if (slot) {
         slot.textContent = value[index] ? "•" : "_";
       }
@@ -131,28 +170,28 @@ if (codeInput && unlockBtn && clearBtn && message && lockedState && audioTermina
   function clearCode() {
     codeInput.value = "";
     updateSlots();
-    message.textContent = "AWAITING CLEARANCE";
+    unlockMessage.textContent = "AWAITING CLEARANCE";
     codeInput.focus();
   }
 
   function checkCode() {
-    const entered = codeInput.value;
+    const enteredCode = codeInput.value;
 
-    if (entered.length < 6) {
-      message.textContent = "ENTER 6 DIGITS";
+    if (enteredCode.length < 6) {
+      unlockMessage.textContent = "ENTER 6 DIGITS";
       codeInput.focus();
       return;
     }
 
-    if (entered === CORRECT_CODE) {
-      message.textContent = "ACCESS GRANTED";
+    if (enteredCode === CORRECT_CODE) {
+      unlockMessage.textContent = "ACCESS GRANTED";
 
       setTimeout(() => {
         lockedState.classList.add("hidden");
         audioTerminal.classList.remove("hidden");
       }, 500);
     } else {
-      message.textContent = "ACCESS DENIED";
+      unlockMessage.textContent = "ACCESS DENIED";
       codeInput.focus();
     }
   }
@@ -160,6 +199,10 @@ if (codeInput && unlockBtn && clearBtn && message && lockedState && audioTermina
   codeInput.addEventListener("input", updateSlots);
   unlockBtn.addEventListener("click", checkCode);
   clearBtn.addEventListener("click", clearCode);
+
+  lockedState.addEventListener("click", () => {
+    codeInput.focus();
+  });
 
   document.addEventListener("keydown", (event) => {
     if (lockedState.classList.contains("hidden")) return;
@@ -185,16 +228,142 @@ if (codeInput && unlockBtn && clearBtn && message && lockedState && audioTermina
     }
   });
 
-  lockedState.addEventListener("click", () => {
-    codeInput.focus();
-  });
-
   updateSlots();
 }
 
 
 /* ================================
-   PROFILE CAROUSEL SECTION
+   AUDIO TERMINAL PLAYER
+================================ */
+
+const audioPlayer = document.getElementById("audioPlayer");
+
+const playBtn = document.getElementById("playBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const stopBtn = document.getElementById("stopBtn");
+const nextBtn = document.getElementById("nextBtn");
+const toggleLyricsBtn = document.getElementById("toggleLyricsBtn");
+
+const volumeControl = document.getElementById("volumeControl");
+
+const coverArt = document.getElementById("coverArt");
+const trackTitle = document.getElementById("trackTitle");
+const trackArtist = document.getElementById("trackArtist");
+
+const wavesView = document.getElementById("wavesView");
+const lyricsView = document.getElementById("lyricsView");
+const lyricsPanel = document.getElementById("lyricsPanel");
+
+const trackItems = Array.from(document.querySelectorAll(".track-item"));
+
+let currentTrackIndex = 0;
+let showingLyrics = false;
+
+if (
+  audioPlayer &&
+  playBtn &&
+  pauseBtn &&
+  stopBtn &&
+  nextBtn &&
+  toggleLyricsBtn &&
+  volumeControl &&
+  coverArt &&
+  trackTitle &&
+  trackArtist &&
+  wavesView &&
+  lyricsView &&
+  lyricsPanel &&
+  trackItems.length > 0
+) {
+  function loadTrack(index) {
+    const track = trackItems[index];
+
+    if (!track) return;
+
+    audioPlayer.src = track.dataset.src;
+    coverArt.src = track.dataset.cover;
+    trackTitle.textContent = track.dataset.title;
+    trackArtist.textContent = track.dataset.artist;
+
+    lyricsPanel.innerHTML = "";
+
+    const lyrics = track.dataset.lyrics || "LYRICS NOT LOADED";
+
+    lyrics.split("|").forEach((line) => {
+      const lyricLine = document.createElement("p");
+      lyricLine.textContent = line.trim();
+      lyricsPanel.appendChild(lyricLine);
+    });
+
+    trackItems.forEach((item) => item.classList.remove("active"));
+    track.classList.add("active");
+
+    currentTrackIndex = index;
+  }
+
+  function playTrack() {
+    audioPlayer.play();
+  }
+
+  function pauseTrack() {
+    audioPlayer.pause();
+  }
+
+  function stopTrack() {
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+  }
+
+  function nextTrack() {
+    currentTrackIndex++;
+
+    if (currentTrackIndex >= trackItems.length) {
+      currentTrackIndex = 0;
+    }
+
+    loadTrack(currentTrackIndex);
+    playTrack();
+  }
+
+  function toggleLyrics() {
+    showingLyrics = !showingLyrics;
+
+    if (showingLyrics) {
+      wavesView.classList.add("hidden");
+      lyricsView.classList.remove("hidden");
+      toggleLyricsBtn.textContent = "WAVES";
+    } else {
+      lyricsView.classList.add("hidden");
+      wavesView.classList.remove("hidden");
+      toggleLyricsBtn.textContent = "LYRICS";
+    }
+  }
+
+  playBtn.addEventListener("click", playTrack);
+  pauseBtn.addEventListener("click", pauseTrack);
+  stopBtn.addEventListener("click", stopTrack);
+  nextBtn.addEventListener("click", nextTrack);
+  toggleLyricsBtn.addEventListener("click", toggleLyrics);
+
+  volumeControl.addEventListener("input", () => {
+    audioPlayer.volume = volumeControl.value;
+  });
+
+  trackItems.forEach((track, index) => {
+    track.addEventListener("click", () => {
+      loadTrack(index);
+      playTrack();
+    });
+  });
+
+  audioPlayer.addEventListener("ended", nextTrack);
+
+  loadTrack(0);
+}
+
+
+/* ================================
+   ABOUT / PROFILE CAROUSEL
 ================================ */
 
 const profileTrack = document.getElementById("profile-Track");
@@ -222,10 +391,9 @@ if (profileTrack && profileSlides.length > 0 && prevProfileBtn && nextProfileBtn
     profileTrack.style.transform = `translateX(-${currentProfileIndex * viewportWidth}px)`;
   }
 
-  moveProfileCarousel(false);
-
   function goNextProfile() {
     if (profileIsMoving) return;
+
     profileIsMoving = true;
     currentProfileIndex++;
     moveProfileCarousel(true);
@@ -233,6 +401,7 @@ if (profileTrack && profileSlides.length > 0 && prevProfileBtn && nextProfileBtn
 
   function goPrevProfile() {
     if (profileIsMoving) return;
+
     profileIsMoving = true;
     currentProfileIndex--;
     moveProfileCarousel(true);
@@ -276,150 +445,13 @@ if (profileTrack && profileSlides.length > 0 && prevProfileBtn && nextProfileBtn
   window.addEventListener("resize", () => {
     moveProfileCarousel(false);
   });
+
+  moveProfileCarousel(false);
 }
 
 
 /* ================================
-   AUDIO TERMINAL PLAYER SECTION
+   CONTACT
 ================================ */
 
-const terminalAudio = document.getElementById("terminalAudio");
-
-const playBtn = document.getElementById("playBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const stopBtn = document.getElementById("stopBtn");
-const terminalNextBtn = document.getElementById("nextBtn");
-const terminalPrevBtn = document.getElementById("prevBtn");
-
-const volumeSlider = document.getElementById("volumeSlider");
-
-const waveView = document.getElementById("waveView");
-const lyricsView = document.getElementById("lyricsView");
-const lyricToggleBtn = document.getElementById("lyricToggleBtn");
-
-const trackButtons = document.querySelectorAll(".terminal-track");
-
-let currentTrackIndex = 0;
-let showingLyrics = false;
-
-if (
-  terminalAudio &&
-  playBtn &&
-  pauseBtn &&
-  stopBtn &&
-  terminalNextBtn &&
-  terminalPrevBtn &&
-  volumeSlider &&
-  waveView &&
-  lyricsView &&
-  lyricToggleBtn
-) {
-  function loadTrack(index) {
-    const track = trackButtons[index];
-
-    if (!track) return;
-
-    terminalAudio.src = track.dataset.audio;
-    lyricsView.textContent = track.dataset.lyrics || "LYRICS NOT LOADED";
-
-    trackButtons.forEach((btn) => btn.classList.remove("active"));
-    track.classList.add("active");
-
-    currentTrackIndex = index;
-  }
-
-  function playTrack() {
-    terminalAudio.play();
-  }
-
-  function pauseTrack() {
-    terminalAudio.pause();
-  }
-
-  function stopTrack() {
-    terminalAudio.pause();
-    terminalAudio.currentTime = 0;
-  }
-
-  function nextTrack() {
-    currentTrackIndex++;
-
-    if (currentTrackIndex >= trackButtons.length) {
-      currentTrackIndex = 0;
-    }
-
-    loadTrack(currentTrackIndex);
-    playTrack();
-  }
-
-  function prevTrack() {
-    currentTrackIndex--;
-
-    if (currentTrackIndex < 0) {
-      currentTrackIndex = trackButtons.length - 1;
-    }
-
-    loadTrack(currentTrackIndex);
-    playTrack();
-  }
-
-  function toggleLyrics() {
-    showingLyrics = !showingLyrics;
-
-    if (showingLyrics) {
-      waveView.classList.add("hidden");
-      lyricsView.classList.remove("hidden");
-      lyricToggleBtn.textContent = "WAVES";
-    } else {
-      lyricsView.classList.add("hidden");
-      waveView.classList.remove("hidden");
-      lyricToggleBtn.textContent = "LYRICS";
-    }
-  }
-
-  if (trackButtons.length > 0) {
-    loadTrack(0);
-  }
-
-  playBtn.addEventListener("click", playTrack);
-  pauseBtn.addEventListener("click", pauseTrack);
-  stopBtn.addEventListener("click", stopTrack);
-  terminalNextBtn.addEventListener("click", nextTrack);
-  terminalPrevBtn.addEventListener("click", prevTrack);
-
-  volumeSlider.addEventListener("input", () => {
-    terminalAudio.volume = volumeSlider.value;
-  });
-
-  lyricToggleBtn.addEventListener("click", toggleLyrics);
-
-  trackButtons.forEach((track, index) => {
-    track.addEventListener("click", () => {
-      loadTrack(index);
-      playTrack();
-    });
-  });
-
-  terminalAudio.addEventListener("ended", nextTrack);
-}
-
-document.querySelectorAll(".vote-btn").forEach((button) => {
-  button.onclick = async () => {
-    const card = button.closest(".vote-card");
-    const trackId = card.dataset.track;
-
-    const res = await fetch("https://cmrcrypt-api.cmrcrypt.workers.dev/vote", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ track_id: trackId }),
-    });
-
-    const data = await res.json();
-    console.log(data);
-
-    button.innerText = `VOTED (${data.votes})`;
-    button.disabled = true;
-  };
-});
+/* No JS needed yet. */
