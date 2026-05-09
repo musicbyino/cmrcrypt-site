@@ -35,16 +35,24 @@
       <div class="hero-content">
 
         <h1 class="hero-title">INO</h1>
-  
-        <div class="hero-buttons">
-          <a href="#audio" class="btn btn-primary">LISTEN NOW</a>
-          <a href="#unlock" class="btn btn-secondary">UNLOCK</a>
-        </div>
+
         <div class="hero-status-panel">
           <p>STATUS: ACTIVE</p>
         </div>
-      </div>
-    </section>
+        
+        <div class="btn btn-secondary">
+          <a href="#unlock">
+          <p>UNLOCK</p>
+        </a>
+     </div>
+
+        <div class="btn-primary">
+          <a href="#audio">
+          <p>LISTEN NOW</p>
+        </a>
+     </div>
+  </div>
+</section>
 <!-- AUDIO --> 
 <section id="audio" class="audio-section section-frame"> 
   <div class="section-heading">
@@ -154,10 +162,11 @@
         <h3>TRACK 01</h3>
 
         <audio controls>
-          <source src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/audio/voting/gold_teef_122.mp3" type="audio/mpeg">
+          <source src="assets/audio/voting/gold_teef_122.mp3" type="audio/mpeg">
         </audio>
 
         <button class="vote-btn">VOTE</button>
+        <p class="vote-count">Votes: 0</p>
 
         <div class="vote-meter">
           <div class="vote-fill"></div>
@@ -171,10 +180,11 @@
         <h3>TRACK 02</h3>
 
         <audio controls>
-          <source src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/audio/voting/fuck_YOU_121.mp3" type="audio/mpeg">
+          <source src="assets/audio/voting/fuck_YOU_121.mp3" type="audio/mpeg">
         </audio>
 
         <button class="vote-btn">VOTE</button>
+        <p class="vote-count">Votes: 0</p>
 
         <div class="vote-meter">
           <div class="vote-fill"></div>
@@ -387,7 +397,7 @@
             <div class="cover-frame">
               <img
                 id="coverArt"
-                src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/INO_LOGO_BARB.WIRE.png"
+                src="images/cover1.jpg"
                 alt="Track cover art"
                 class="cover-art"
               />
@@ -464,11 +474,10 @@
             <button
               type="button"
               class="track-item active"
-              data-src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/audio/audio_player/ICB_WYS.mp3"
+              data-src="assets/audio/audio_player/ICB_WYS.mp3"
               data-title="ICB_WYS.mp3"
               data-artist="INO"
               data-cover="images/cover1.jpg"
-              data-lyrics="Ino mf crazy baby watch yo self | I be talkin to myself in the depths of hell. | I been dropping more tabs | I need bigger dabs | It dont ever last | It | (It dont ever fucking last) | Walking lone thru this world trynna love myself | Trynna find these pieces they so scattered down this well | I aint good I aint really fucking feeing well | Been a long time since I really seen myself | I aint got no options baby what the Fuck is left | Imma do the right thing. All with no respect | I do what I want to go do what you can | Imma shoot a lil film and fly to Japan | This the blacksmith | Come Fuck with the man | Cuz I make this | All with my hands | Fuck a bag | Fuck mask | You can look me right up | Im the eyes mf | Imma tell you wassup | Aint no lie mf | imma tell you wassup"
             >
               01 / Track One
             </button>
@@ -476,11 +485,11 @@
              <button
                type="button"
                class="track-item"
-               data-src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/audio/audio_player/Jam%20133.mp3"
+               data-src="audio/song2.mp3"
                data-title="Track Two"
                data-artist="INO"
                data-cover="images/cover2.jpg"
-               data-lyrics="Yeah I waste away | Through shades of grey | the pain in me. | Wont fade away | Past rainy days | And razor blade | The smoke today will last for days | Its Cutting deep these lacerations | Cut thru layers | Blasting masons | Stone walled for generations | Now we blasting back | Why you fucking hatin | Mother fucking land mines | WE mine sweep and baptize | with satans piss we dont lie | I smoke some dabs to get high | Telling the truth No lie Im fine | Eyes roll back to my mind | This fucking hurts Im not dyin | Loosen the jam | Get me a grip | Point at ya face | Squeeze n it hit | Mo fucker I be wanting that shit | Watching the blood drip | Aint into fun shit | I Fuck up the function | Im on some dumb shit | Im bringing the love in | As much as it let in | Im dumping the lead in | To the back of his skull Until its dented | Didnt you mention. | Body was moving | Body was twitching | Thought he was living | Thats what happens | When you sole be taking steps | Through the depths of hell | I just need dabs and my demons killed | Rest in piss for you aswell"
+               data-lyrics="Ino mf crazy baby watch yo self | I be talkin to myself in the depths of hell. | I been dropping more tabs | I need bigger dabs | It dont ever last | It | (It dont ever fucking last) | Walking lone thru this world trynna love myself | Trynna find these pieces they so scattered down this well | I aint good I aint really fucking feeing well | Been a long time since I really seen myself | I aint got no options baby what the Fuck is left | Imma do the right thing. All with no respect | I do what I want to go do what you can | Imma shoot a lil film and fly to Japan | This the blacksmith | Come Fuck with the man | Cuz I make this | All with my hands | Fuck a bag | Fuck mask | You can look me right up | Im the eyes mf | Imma tell you wassup | Aint no lie mf | imma tell you wassup"
             >
               02 / Track Two
           </button>
@@ -499,7 +508,7 @@
     </div>
 
     <audio id="audioPlayer" preload="metadata">
-      <source src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/audio/audio_player/ICB_WYS.mp3" type="audio/mpeg" />
+      <source src="audio/song1.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
   </div>
@@ -520,6 +529,8 @@
                <img src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/images/subj_prof/abt2.png" alt="INO profile images">
             </div>
             <div class="profile-text">
+              <div class="profile-node">[ SUBJECT: INO ]</div>
+
               <p>INO creates dark, energetic, underground, and fractured music.</p>
               <p>The sound originated from the sticks of Vermont. Raised in solitude. Lost in life.</p>
               <p>This space functions as an archive of releases, visuals, and signal.</p>
@@ -532,6 +543,7 @@
                <img src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/images/subj_prof/renee2.jpg" alt="Renee profile image">
             </div>
             <div class="profile-text">
+              <div class="profile-node">[ SUBJECT: RENEE ]</div>
               <p>Renne handles everything video and moving visuals for the team.</p>
               <p>Her work transleates energy, atmosphere, and motion into the CMR world.</p>
               <p>She helps document the project in motion.</p> 
@@ -544,6 +556,7 @@
                <img src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/images/subj_prof/tony.jpg" alt="Tony profile image">
             </div>
             <div class="profile-text">
+              <div class="profile-node">[ SUBJECT: TONY ]</div>
               <p>Tony is part of the visual core behind CMR.</p> 
               <p>He handles still phototgraphy and helps shape the image of the project.</p>
               <p>His work captures texture, attitude, and presence.</p>
