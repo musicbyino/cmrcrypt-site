@@ -425,13 +425,10 @@ section {
 }
 
 .audio-carousel-track {
-  cursor: grab;
-  touch-action: pan-y;
-  user-select: none;
-}
-
-.audio-carousel-track:active {
-  cursor: grabbing;
+  display: flex;
+  gap: 30px;
+  transition: transform 0.45s ease;
+  will-change: transform;
 }
 
 /* 2 cards visible */
@@ -870,20 +867,7 @@ section {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.vote-bar {
-  width: 100%;
-  height: 10px;
-  border: 1px solid #00ff88;
-  margin-top: 10px;
-  background: rgba(0, 255, 136, 0.08);
-}
 
-.vote-bar-fill {
-  width: 0%;
-  height: 100%;
-  background: #00ff88;
-  transition: width 0.3s ease;
-}
 
 /* =========================
    UNLOCK + AUDIO TERMINAL
