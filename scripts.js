@@ -98,7 +98,13 @@ document.querySelectorAll(".vote-btn").forEach((button) => {
     const data = await res.json();
 
     voteCount.innerText = `Votes: ${data.votes}`;
-    button.innerText = "VOTED";
+
+    if (data.already_voted) {
+      button.innerText = "ALREADY VOTED";
+    } else {
+      button.innerText = "VOTED";
+    }
+
     button.disabled = true;
   };
 });
