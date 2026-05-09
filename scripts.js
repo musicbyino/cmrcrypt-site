@@ -16,12 +16,20 @@
    AUDIO CARD CAROUSEL
 ================================ */
 
+/* ================================
+   AUDIO CAROUSEL
+   Infinite arrows + desktop drag + mobile swipe
+================================ */
+
 const audioCarouselTrack = document.querySelector(".audio-carousel-track");
 const audioSlides = Array.from(document.querySelectorAll(".audio-slide"));
 const audioPrevBtn = document.querySelector(".audio-carousel-arrow.left");
 const audioNextBtn = document.querySelector(".audio-carousel-arrow.right");
 
 let audioIndex = 2;
+let isDragging = false;
+let startX = 0;
+let currentTranslate = 0;
 
 if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn) {
   const firstClones = audioSlides.slice(0, 2).map((slide) => slide.cloneNode(true));
@@ -35,7 +43,6 @@ if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn
   function getAudioStep() {
     const slide = allAudioSlides[0];
     const gap = parseInt(getComputedStyle(audioCarouselTrack).gap) || 0;
-
     return slide.offsetWidth + gap;
   }
 
@@ -44,6 +51,20 @@ if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn
 
     audioCarouselTrack.style.transition = animate ? "transform 0.45s ease" : "none";
     audioCarouselTrack.style.transform = `translateX(-${audioIndex * step}px)`;
+  }
+
+  function handleLoopReset() {
+    const total = allAudioSlides.length;
+
+    if (audioIndex >= total - 2) {
+      audioIndex = 2;
+      moveAudioCarousel(false);
+    }
+
+    if (audioIndex <= 1) {
+      audioIndex = total - 4;
+      moveAudioCarousel(false);
+    }
   }
 
   audioNextBtn.addEventListener("click", () => {
@@ -56,18 +77,45 @@ if (audioCarouselTrack && audioSlides.length > 0 && audioPrevBtn && audioNextBtn
     moveAudioCarousel(true);
   });
 
-  audioCarouselTrack.addEventListener("transitionend", () => {
-    const total = allAudioSlides.length;
+  audioCarouselTrack.addEventListener("transitionend", handleLoopReset);
 
-    if (audioIndex >= total - 2) {
-      audioIndex = 2;
-      moveAudioCarousel(false);
+  /* DRAG / SWIPE START */
+  audioCarouselTrack.addEventListener("pointerdown", (e) => {
+    isDragging = true;
+    startX = e.clientX;
+    currentTranslate = -audioIndex * getAudioStep();
+
+    audioCarouselTrack.style.transition = "none";
+    audioCarouselTrack.setPointerCapture(e.pointerId);
+  });
+
+  audioCarouselTrack.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+
+    const moveX = e.clientX - startX;
+    audioCarouselTrack.style.transform = `translateX(${currentTranslate + moveX}px)`;
+  });
+
+  audioCarouselTrack.addEventListener("pointerup", (e) => {
+    if (!isDragging) return;
+
+    isDragging = false;
+    const moveX = e.clientX - startX;
+    const swipeThreshold = 50;
+
+    if (moveX < -swipeThreshold) {
+      audioIndex++;
+    } else if (moveX > swipeThreshold) {
+      audioIndex--;
     }
 
-    if (audioIndex <= 1) {
-      audioIndex = total - 4;
-      moveAudioCarousel(false);
-    }
+    moveAudioCarousel(true);
+    audioCarouselTrack.releasePointerCapture(e.pointerId);
+  });
+
+  audioCarouselTrack.addEventListener("pointercancel", () => {
+    isDragging = false;
+    moveAudioCarousel(true);
   });
 
   window.addEventListener("resize", () => {
