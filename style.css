@@ -425,10 +425,13 @@ section {
 }
 
 .audio-carousel-track {
-  display: flex;
-  gap: 30px;
-  transition: transform 0.45s ease;
-  will-change: transform;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.audio-carousel-track:active {
+  cursor: grabbing;
 }
 
 /* 2 cards visible */
