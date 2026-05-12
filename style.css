@@ -433,8 +433,8 @@ section {
 
 /* 2 cards visible */
 .audio-card.audio-slide {
-  flex: 0 0 calc((100% - 20px) / 2);
-  max-width: calc((100% - 20px) / 2);
+  flex: 0 0 100%;
+  max-width:   100%;
 }
 
 
@@ -1882,15 +1882,13 @@ animation: textFlicker .75s steps(50) infinite;
   }
 
   .audio-carousel-track {
-    gap: 16px;
-    transform: none !important;
+    gap: 0;
   }
 
   .audio-card.audio-slide {
-    flex: 0 0 86%;
-    min-width: 86%;
-    max-width: 86%;
-    scroll-snap-align: center;
+    flex: 0 0 100%;
+    min-width: 100%;
+    max-width: 100%;
   }
 
   .audio-carousel-arrow {
@@ -2122,8 +2120,7 @@ animation: textFlicker .75s steps(50) infinite;
   .hero-title {
     font-size: clamp(2rem, 14vw, 3.2rem);
   }
-
-  .audio-card.audio-slide,
+  
   .profile-slide {
     flex-basis: 90%;
     min-width: 90%;
