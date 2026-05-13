@@ -1878,13 +1878,11 @@ animation: textFlicker .75s steps(50) infinite;
     display: block;
   }
 
-  .audio-carousel-viewport {
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 10px 0 18px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-  }
+.audio-carousel-viewport {
+  overflow: hidden;
+  padding: 10px 0 18px;
+  touch-action: pan-x;
+}
 
   .audio-carousel-track {
     gap: 0;
@@ -1893,12 +1891,18 @@ animation: textFlicker .75s steps(50) infinite;
 .audio-card.audio-slide {
   flex: 0 0 100%;
   min-width: 100%;
-  max-width: 90%;
-  padding-inline: 35px;
-  transform: scale(0.80);
-  transform-origin: center center;
+  max-width: 100%;
+  padding-inline: 22px;
+  box-sizing: border-box;
 }
-
+.audio-card.audio-slide .audio-card-cover,
+.audio-card.audio-slide h3,
+.audio-card.audio-slide p,
+.audio-card.audio-slide .project-links {
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
   .audio-carousel-arrow {
     display: none;
   }
