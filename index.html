@@ -382,135 +382,64 @@
     </div>
   </div>
   
-  <!-- UNLOCK STATE -->
-      <div class="audio-terminal unlocked-state hidden" id="audioTerminal">
-        <div class="audio-terminal-top">
-          <span class="audio-terminal-label">[ AUDIO TERMINAL UNLOCKED ]</span>
-          <span class="audio-terminal-status">CLEARANCE ACCEPTED</span>
-        </div>
-        
-        <div class="audio-terminal-main">
-          <!-- LEFT SIDE -->
-          <div class="audio-left">
-            <div class="cover-frame">
-              <img
-                id="coverArt"
-                src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/INO_LOGO_BARB.WIRE.png"
-                alt="Track cover art"
-                class="cover-art"
-              />
-            </div>
-             
-            <div class="track-meta">
-              <div class="track-label">NOW LOADED</div>
-              <h3 class="track-title" id="trackTitle">Track One</h3>
-              <p class="track-artist" id="trackArtist">INO</p>
-            </div>
-            
-            <div class="audio-controls">
-              <button type="button" class="player-btn" id="playBtn">PLAY</button>
-              <button type="button" class="player-btn" id="pauseBtn">PAUSE</button>
-              <button type="button" class="player-btn" id="stopBtn">STOP</button>
-              <button type="button" class="player-btn" id="nextBtn">NEXT</button>
-              <button type="button" class="player-btn" id="toggleLyricsBtn">LYRICS</button>
-            </div>
+ <!-- UNLOCK STATE -->
+<div class="audio-terminal unlocked-state hidden" id="audioTerminal">
+  <div class="audio-terminal-top">
+    <span class="audio-terminal-label">[ AUDIO TERMINAL UNLOCKED ]</span>
+    <span class="audio-terminal-status">CLEARANCE ACCEPTED</span>
+  </div>
 
-            <div class="volume-wrap">
-              <label for="volumeControl" class="volume-label">VOLUME</label>
-              <input 
-                type="range"
-                id="volumeControl"
-                class="volume-slider"
-                min="0"
-                max="1"
-                step="0.01"
-                value="1"
-              />
-            </div>
-          </div>
-          <!-- RIGHT SIDE -->
-           <div class="audio-right">
-             <!-- WAVES VIEW -->
-             <div class="visual-header active" id="wavesView">
-               <div class="visual-header">SIGNAL WAVE</div>
-
-               <div class="wave-area">
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-                 <span class="wave-bar"></span>
-               </div>
-             </div>
-              
-             <!-- LYRICS VIEW -->
-            <div class="terminal-visual lyrics-view" id="lyricsView">
-              <div class="visual-header">LYRICS DISPALY</div>
-              <div class="lyrics-panel" id="lyricsPanel">
-                <p>[ Lyrics loaded ]</p>
-                <p> Add lyrics line by line</p>
-                <p>later update w js per track</p>
-              </div>
-            </div>
-          </div>
-        </div>
-          
-        <div class="audio-terminal-bottom">
-          <div class="track-list-label">AVAILABLE FILES</div>
-
-          <div class="track-list" id="trackList">
-            <button
-              type="button"
-              class="track-item active"
-              data-src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/audio/audio_player/ICB_WYS.mp3"
-              data-title="ICB_WYS.mp3"
-              data-artist="INO"
-              data-cover="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/INO_LOGO_BARB.WIRE.png"
-              data-lyrics="Ino mf crazy baby watch yo self | I be talkin to myself in the depths of hell. | I been dropping more tabs | I need bigger dabs | It dont ever last | It | (It dont ever fucking last) | Walking lone thru this world trynna love myself | Trynna find these pieces they so scattered down this well | I aint good I aint really fucking feeing well | Been a long time since I really seen myself | I aint got no options baby what the Fuck is left | Imma do the right thing. All with no respect | I do what I want to go do what you can | Imma shoot a lil film and fly to Japan | This the blacksmith | Come Fuck with the man | Cuz I make this | All with my hands | Fuck a bag | Fuck mask | You can look me right up | Im the eyes mf | Imma tell you wassup | Aint no lie mf | imma tell you wassup"
-            >
-              01 / Track One
-            </button>
-
-             <button
-               type="button"
-               class="track-item"
-               data-src="audio/song2.mp3"
-               data-title="Track Two"
-               data-artist="INO"
-               data-cover="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/INO_LOGO_BARB.WIRE.png"
-            >
-              02 / Track Two
-          </button>
-            
-          <button
-            type="button"
-            class="track-item"
-            data-src="audio/song3.mp3"
-            data-title="Track Three"
-            data-artist="INO"
-            data-cover="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/INO_LOGO_BARB.WIRE.png"
-          >
-            03 / Track Three
-        </button>
-      </div>
+  <!-- CENTER AUDIO PLAYER -->
+  <div class="crypt-player">
+    <div class="cover-frame">
+      <img
+        id="coverArt"
+        src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/INO_LOGO_BARB.WIRE.png"
+        alt="Track cover art"
+        class="cover-art"
+      />
     </div>
 
-    <audio id="audioPlayer" preload="metadata">
-      <source src="audio/song1.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
+    <div class="track-meta">
+      <div class="track-label">NOW LOADED</div>
+      <h3 class="track-title" id="trackTitle">CLASSIFIED AUDIO</h3>
+      <p class="track-artist" id="trackArtist">INO</p>
+    </div>
+
+    <div class="audio-controls">
+      <button type="button" class="player-btn" id="prevBtn">PREV</button>
+      <button type="button" class="player-btn" id="playBtn">PLAY</button>
+      <button type="button" class="player-btn" id="nextBtn">NEXT</button>
+    </div>
   </div>
-</section>
+
+  <!-- DISPLAY TOGGLE -->
+  <div class="audio-view-toggle">
+    <button type="button" class="player-btn active" id="showWavesBtn">WAVES</button>
+    <button type="button" class="player-btn" id="toggleLyricsBtn">LYRICS</button>
+  </div>
+
+  <!-- DISPLAY AREA BELOW PLAYER -->
+  <div class="audio-display">
+    <!-- WAVES VIEW -->
+    <div class="terminal-visual waves-view active" id="wavesView">
+      <div class="visual-header">SIGNAL WAVE</div>
+
+      <div class="wave-area" id="waveArea"></div>
+    </div>
+
+    <!-- LYRICS VIEW -->
+    <div class="terminal-visual lyrics-view" id="lyricsView">
+      <div class="visual-header">LYRICS DISPLAY</div>
+
+  <div class="lyrics-panel terminal-lyrics-panel" id="lyricsPanel">
+  <p class="lyric-line muted">[ LYRICS LOCKED UNTIL PLAYBACK ]</p>
+</div>
+    </div>
+  </div>
+
+  <audio id="audioPlayer" preload="metadata"></audio>
+</div>
 <!-- ABOUT --> 
 <section class="about-section" id="about">
   <div class="section-header">
