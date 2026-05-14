@@ -302,18 +302,17 @@ if (codeInput && unlockBtn && clearBtn && unlockMessage && lockedState && audioT
 
 
 /* ================================
-   AUDIO TERMINAL PLAYER
+   SECRET AUDIO TERMINAL PLAYER
 ================================ */
 
 const audioPlayer = document.getElementById("audioPlayer");
 
 const playBtn = document.getElementById("playBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const stopBtn = document.getElementById("stopBtn");
+const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
-const toggleLyricsBtn = document.getElementById("toggleLyricsBtn");
 
-const volumeControl = document.getElementById("volumeControl");
+const showWavesBtn = document.getElementById("showWavesBtn");
+const toggleLyricsBtn = document.getElementById("toggleLyricsBtn");
 
 const coverArt = document.getElementById("coverArt");
 const trackTitle = document.getElementById("trackTitle");
@@ -323,114 +322,338 @@ const wavesView = document.getElementById("wavesView");
 const lyricsView = document.getElementById("lyricsView");
 const lyricsPanel = document.getElementById("lyricsPanel");
 
-const trackItems = Array.from(document.querySelectorAll(".track-item"));
+
+const waveArea = document.getElementById("waveArea");
+
+const WAVE_BAR_COUNT = 150;
+
+if (waveArea) {
+  for (let i = 0; i < WAVE_BAR_COUNT; i++) {
+    const bar = document.createElement("span");
+
+    bar.classList.add("wave-bar");
+
+    waveArea.appendChild(bar);
+  }
+}
+
+const waveBars = Array.from(document.querySelectorAll(".wave-bar"));
+
 
 let currentTrackIndex = 0;
-let showingLyrics = false;
+let isPlaying = false;
+
+let audioContext;
+let analyser;
+let sourceNode;
+let frequencyData;
+let animationId;
+
+/* ================================
+   HIDDEN TRACK LIST
+================================ */
+
+const secretTracks = [
+  {
+    src: "https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/audio/audio_player/ICB_WYS.mp3",
+
+    title: "CLASSIFIED AUDIO",
+
+    artist: "INO",
+
+    cover:
+      "https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/INO_LOGO_BARB.WIRE.png",
+
+    lyrics: [
+      "Ino mf crazy baby, watch yo self!",
+      "I be talkin to myself in the depths of hell.",
+      "I been dropping more tabs",
+      "I need bigger dabs",
+      "It don’t ever last",
+      "It don’t ever fucking last",
+      "Walking lone thru this world trynna love myself",
+      "Trynna find these pieces they so scattered down this well",
+      "I ain’t good I ain’t really fucking feeing well",
+      "Been a long time since I really seen myself",
+      "",
+      "",
+      "",
+      "",
+      "I ain’t got no options baby what the Fuck is left",
+      "Imma do the right thing. All with no respect",
+      "I do what I want to do what you can",
+      "Imma shoot a lil film and fly to Japan",
+      "This blacksmith",
+      "Come Fuck with the man",
+      "Cuz, I make this",
+      "All with my hands",
+      "Fuck a bag",
+      "Fuck mask",
+      "You can look me right up",
+      "I’m the eyes mf",
+      "Imma tell you wassup",
+      "Ain’t no lie mf",
+      "I don’t need to hype up",
+    ],
+  },
+];
+/* ================================
+   LOAD TRACK + TERMINAL LYRIC FEED
+================================ */
+
+let currentLyricLineIndex = 0;
+let lyricInterval;
+let lyricStartTimeout;
+
+const LYRIC_START_DELAY = 13500; // 13.5 seconds before first bar
+const LYRIC_LINE_DELAY = 2500;  // time between lyric lines
+
+function loadTrack(index) {
+  const track = secretTracks[index];
+
+  if (!track) return;
+
+  audioPlayer.src = track.src;
+  audioPlayer.crossOrigin = "anonymous";
+  coverArt.src = track.cover;
+  trackTitle.textContent = track.title;
+  trackArtist.textContent = track.artist;
+
+  lyricsPanel.innerHTML = "";
+
+  currentTrackIndex = index;
+  currentLyricLineIndex = -1;
+
+  clearInterval(lyricInterval);
+  clearTimeout(lyricStartTimeout);
+}
+
+function addNextLyricLine() {
+  const track = secretTracks[currentTrackIndex];
+
+  if (!track || !track.lyrics) return;
+
+  currentLyricLineIndex++;
+
+  if (currentLyricLineIndex >= track.lyrics.length) {
+    clearInterval(lyricInterval);
+    return;
+  }
+
+  const oldActiveLine = lyricsPanel.querySelector(".lyric-line.active");
+
+  if (oldActiveLine) {
+    oldActiveLine.classList.remove("active");
+  }
+
+  const line = track.lyrics[currentLyricLineIndex];
+  const lyricLine = document.createElement("p");
+
+  if (line === "") {
+    lyricLine.classList.add("lyric-line", "lyric-spacer");
+    lyricLine.innerHTML = "&nbsp;";
+  } else {
+    lyricLine.classList.add("lyric-line", "active");
+    lyricLine.textContent = line;
+  }
+
+  lyricsPanel.appendChild(lyricLine);
+  lyricsPanel.scrollTop = lyricsPanel.scrollHeight;
+}
+
+function startLyricFeed() {
+  clearInterval(lyricInterval);
+  clearTimeout(lyricStartTimeout);
+
+lyricsPanel.innerHTML = "";
+
+const loadingLine = document.createElement("p");
+loadingLine.classList.add("lyric-line", "active");
+loadingLine.textContent = "[ LYRICS LOADING ]";
+lyricsPanel.appendChild(loadingLine);
+
+currentLyricLineIndex = -1;
+
+  lyricStartTimeout = setTimeout(() => {
+    lyricsPanel.innerHTML = "";
+    addNextLyricLine();
+
+    lyricInterval = setInterval(() => {
+      addNextLyricLine();
+    }, LYRIC_LINE_DELAY);
+  }, LYRIC_START_DELAY);
+}
+
+function stopLyricFeed() {
+  clearInterval(lyricInterval);
+  clearTimeout(lyricStartTimeout);
+}
+/* ================================
+   AUDIO VISUALIZER SETUP
+================================ */
+
+function setupAudioVisualizer() {
+  if (audioContext) return;
+
+  audioContext = new AudioContext();
+  analyser = audioContext.createAnalyser();
+
+  analyser.fftSize = 64;
+
+  sourceNode = audioContext.createMediaElementSource(audioPlayer);
+  sourceNode.connect(analyser);
+  analyser.connect(audioContext.destination);
+
+  frequencyData = new Uint8Array(analyser.frequencyBinCount);
+}
+
+function animateWaveBars() {
+  if (!analyser || !frequencyData || waveBars.length === 0) return;
+
+  analyser.getByteFrequencyData(frequencyData);
+
+  waveBars.forEach((bar, index) => {
+    const dataIndex = Math.floor(
+      (index / waveBars.length) * frequencyData.length
+    );
+
+    const value = frequencyData[dataIndex];
+    const height = Math.max(8, (value / 255) * 100);
+
+    bar.style.height = `${height}%`;
+  });
+
+  animationId = requestAnimationFrame(animateWaveBars);
+}
+
+function stopWaveBars() {
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+  }
+
+  waveBars.forEach((bar) => {
+    bar.style.height = "8%";
+  });
+}
+
+/* ================================
+   PLAY / PAUSE
+================================ */
+
+function playTrack() {
+  setupAudioVisualizer();
+
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+
+  audioPlayer.play();
+  isPlaying = true;
+  playBtn.textContent = "PAUSE";
+
+  animateWaveBars();
+  startLyricFeed();
+}
+
+function pauseTrack() {
+  audioPlayer.pause();
+  isPlaying = false;
+  playBtn.textContent = "PLAY";
+
+  stopWaveBars();
+  stopLyricFeed();
+}
+
+/* ================================
+   NEXT / PREV
+================================ */
+
+function nextTrack() {
+  currentTrackIndex++;
+
+  if (currentTrackIndex >= secretTracks.length) {
+    currentTrackIndex = 0;
+  }
+
+  loadTrack(currentTrackIndex);
+
+  if (isPlaying) {
+    playTrack();
+  }
+}
+
+function prevTrack() {
+  currentTrackIndex--;
+
+  if (currentTrackIndex < 0) {
+    currentTrackIndex = secretTracks.length - 1;
+  }
+
+  loadTrack(currentTrackIndex);
+
+  if (isPlaying) {
+    playTrack();
+  }
+}
+
+/* ================================
+   WAVES / LYRICS TOGGLE
+================================ */
+
+function showWaves() {
+  wavesView.classList.add("active");
+  lyricsView.classList.remove("active");
+
+  showWavesBtn.classList.add("active");
+  toggleLyricsBtn.classList.remove("active");
+}
+
+function showLyrics() {
+  lyricsView.classList.add("active");
+  wavesView.classList.remove("active");
+
+  toggleLyricsBtn.classList.add("active");
+  showWavesBtn.classList.remove("active");
+}
+
+/* ================================
+   EVENTS
+================================ */
 
 if (
   audioPlayer &&
   playBtn &&
-  pauseBtn &&
-  stopBtn &&
+  prevBtn &&
   nextBtn &&
+  showWavesBtn &&
   toggleLyricsBtn &&
-  volumeControl &&
   coverArt &&
   trackTitle &&
   trackArtist &&
   wavesView &&
   lyricsView &&
   lyricsPanel &&
-  trackItems.length > 0
+  waveBars.length > 0
 ) {
-  function loadTrack(index) {
-    const track = trackItems[index];
-
-    if (!track) return;
-
-    audioPlayer.src = track.dataset.src;
-    coverArt.src = track.dataset.cover;
-    trackTitle.textContent = track.dataset.title;
-    trackArtist.textContent = track.dataset.artist;
-
-    lyricsPanel.innerHTML = "";
-
-    const lyrics = track.dataset.lyrics || "LYRICS NOT LOADED";
-
-    lyrics.split("|").forEach((line) => {
-      const lyricLine = document.createElement("p");
-      lyricLine.textContent = line.trim();
-      lyricsPanel.appendChild(lyricLine);
-    });
-
-    trackItems.forEach((item) => item.classList.remove("active"));
-    track.classList.add("active");
-
-    currentTrackIndex = index;
-  }
-
-  function playTrack() {
-    audioPlayer.play();
-  }
-
-  function pauseTrack() {
-    audioPlayer.pause();
-  }
-
-  function stopTrack() {
-    audioPlayer.pause();
-    audioPlayer.currentTime = 0;
-  }
-
-  function nextTrack() {
-    currentTrackIndex++;
-
-    if (currentTrackIndex >= trackItems.length) {
-      currentTrackIndex = 0;
-    }
-
-    loadTrack(currentTrackIndex);
-    playTrack();
-  }
-
-  function toggleLyrics() {
-    showingLyrics = !showingLyrics;
-
-    if (showingLyrics) {
-      wavesView.classList.add("hidden");
-      lyricsView.classList.remove("hidden");
-      toggleLyricsBtn.textContent = "WAVES";
+  playBtn.addEventListener("click", () => {
+    if (isPlaying) {
+      pauseTrack();
     } else {
-      lyricsView.classList.add("hidden");
-      wavesView.classList.remove("hidden");
-      toggleLyricsBtn.textContent = "LYRICS";
-    }
-  }
-
-  playBtn.addEventListener("click", playTrack);
-  pauseBtn.addEventListener("click", pauseTrack);
-  stopBtn.addEventListener("click", stopTrack);
-  nextBtn.addEventListener("click", nextTrack);
-  toggleLyricsBtn.addEventListener("click", toggleLyrics);
-
-  volumeControl.addEventListener("input", () => {
-    audioPlayer.volume = volumeControl.value;
-  });
-
-  trackItems.forEach((track, index) => {
-    track.addEventListener("click", () => {
-      loadTrack(index);
       playTrack();
-    });
+    }
   });
+
+  prevBtn.addEventListener("click", prevTrack);
+  nextBtn.addEventListener("click", nextTrack);
+
+  showWavesBtn.addEventListener("click", showWaves);
+  toggleLyricsBtn.addEventListener("click", showLyrics);
 
   audioPlayer.addEventListener("ended", nextTrack);
 
   loadTrack(0);
+  showWaves();
 }
-
-
 /* ================================
    ABOUT / PROFILE CAROUSEL
 ================================ */
