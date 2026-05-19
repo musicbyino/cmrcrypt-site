@@ -12,52 +12,71 @@
 </head>
 <body>
   <div class="site-shell">
-    <!-- HEADER / NAV -->
+
+    <main>
+    <!-- HERO -->
+ <!-- HERO -->
+<section id="hero" class="hero-section">
+
+      <!-- NAV -->
     <header class="site-header">
       <div class="logo-block">
-        <a href="#hero" class="logo">Cuerpo Muerto Records Crypt</a>
+        <a href="#hero" class="logo">Cuerpo Muerto Records</a>
         <span class="signal-tag">[ SIGNAL: ONLINE ]</span>
       </div>
-      <nav class="site-nav">
+      <nav class="side-system-nav">
        <a href="#hero">HOME</a>
        <a href="#audio">AUDIO</a>
        <a href="#video">VIDEO</a>
        <a href="#unlock">UNLOCK</a>
-       <a href="#about">ABOUT</a>
-       <a href="#contact">CONTACT</a>
      </nav>
    </header>
-    <!-- MAIN CONTENT -->
-    <main>
-    <!-- HERO -->
-    <section id="hero" class="hero-section">
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
 
-        <h1 class="hero-title">INO</h1>
+  <video
+    class="hero-video"
+    autoplay
+    muted
+    loop
+    playsinline
+  >
+    <source 
+      src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/cmr_hero_vid_2_mobile.mp4" type="video/mp4"
+      type="video/mp4"
+      media="(max-width: 768px)"
+    >
+    <source
+      src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/cmr_hero_vid_2.mp4" 
+      type="video/mp4"
+    >  
 
-        <div class="hero-status-panel">
-          <p>STATUS: ACTIVE</p>
-        </div>
-        
-        <div class="btn btn-secondary">
-          <a href="#unlock">
-          <p>UNLOCK</p>
-        </a>
-     </div>
+  </video>
 
-        <div class="btn-primary">
-          <a href="#audio">
-          <p>LISTEN NOW</p>
-        </a>
-     </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+
   </div>
+
+  <div class="hero-buttons">
+
+    <div class="btn btn-secondary hero-btn-left">
+      <a href="#unlock">
+        <p>UNLOCK</p>
+      </a>
+    </div>
+
+    <div class="btn btn-primary hero-btn-right">
+      <a href="#audio">
+        <p>LISTEN NOW</p>
+      </a>
+    </div>
+
+  </div>
+
 </section>
 <!-- AUDIO --> 
 <section id="audio" class="audio-section section-frame"> 
   <div class="section-heading">
-    <p class="section-label">AUDIO ARCHIVE</p>
-    <h2>Selected Releases</h2>
   </div>
 
   <div class="audio-carousel">
@@ -140,14 +159,13 @@
 <!-- VOTING -->
 <section id="vote" class="vote-section section-frame">
   <div class="section-heading">
-    <p class="section-label">[ SIGNAL CONTROL ]</p>
-    <h2>VOTE TERMINAL</h2>
+  
   </div>
 
   <div class="vote-terminal-shell">
 
     <div class="vote-terminal-top">
-      <span class="vote-label"> NEXT DROP </span>
+      <span class="vote-label">[ VOTING TERMINAL ]</span>
       <span class="vote-status">ACTIVE</span>
     </div>
 
@@ -198,8 +216,7 @@
 <!-- VIDEO -->
  <section id="video" class="video-section section-frame">
    <div class="section-heading">
-     <p class="section-label">[ SITE ACCESS ]</p>
-     <h2>VIDEO ARCHIVE</h2>
+    
    </div> 
 
    <div class="video-archive-shell">
@@ -342,11 +359,7 @@
 <!-- UNLOCK -->
 <section class="unlock-section" id="unlock">
   <div class="unlock-header-line">
-    <span class="unlock-system">[ CMR CRYPT ]</span>
-  </div>
-  
-  <h2 class="unlock-title">UNLOCK</h2>
-  <p class="unlock-subtext">Enter code to access crypt.</p>
+
   
   <!-- LOCKED STATE -->
   <div class="unlock-panel locked-state" id="lockedState">
@@ -443,9 +456,8 @@
 <!-- ABOUT --> 
 <section class="about-section" id="about">
   <div class="section-header">
-    <p class="section-label">SUBJECT PROFILE</p>
-    <h2>ABOUT</h2>
   </div>
+
   <div class="profile-carousel">
     <button class="carousel-arrow left" id="prevProfile" aria-label="Previous profile"><</button>
     <div class="carousel-viewport">
@@ -499,8 +511,7 @@
 
 <section id="contact" class="contact-section section-frame">
   <div class="section-heading">
-    <p class="section-label">CONTACT NODE</p>
-    <h2>CONTACT</h2>
+
   </div>
 
   <div class="contact-layout"> 
