@@ -8,9 +8,22 @@
 /* ================================
    HERO
 ================================ */
+const heroSection = document.querySelector(".hero-section");
+const systemNav = document.querySelector(".side-system-nav");
 
-/* No JS needed yet. */
+function updateSystemNav() {
+  const heroBottom = heroSection.getBoundingClientRect().bottom;
 
+  if (heroBottom <=80) {
+    systemNav.classList.add("nav-visible");
+  } else {
+    systemNav.classList.remove("nav-visible");
+  }
+}
+
+window.addEventListener("scroll", updateSystemNav);
+window.addEventListener("load", updateSystemNav);
+updateSystemNav();
 
 /* ================================
    AUDIO CARD CAROUSEL
