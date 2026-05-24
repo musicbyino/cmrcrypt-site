@@ -113,23 +113,29 @@ if (
     audioIsMoving = false;
   });
 
-  let audioTouchStartX = 0;
+ let audioTouchStartX = 0;
+let audioTouchStartY = 0;
 
-  audioViewport.addEventListener("touchstart", (event) => {
-    audioTouchStartX = event.changedTouches[0].screenX;
-  });
+audioViewport.addEventListener("touchstart", (event) => {
+  audioTouchStartX = event.touches[0].clientX;
+  audioTouchStartY = event.touches[0].clientY;
+});
 
-  audioViewport.addEventListener("touchend", (event) => {
-    const audioTouchEndX = event.changedTouches[0].screenX;
+audioViewport.addEventListener("touchend", (event) => {
+  const audioTouchEndX = event.changedTouches[0].clientX;
+  const audioTouchEndY = event.changedTouches[0].clientY;
 
-    if (audioTouchStartX - audioTouchEndX > 50) {
+  const audioDiffX = audioTouchStartX - audioTouchEndX;
+  const audioDiffY = audioTouchStartY - audioTouchEndY;
+
+  if (Math.abs(audioDiffX) > Math.abs(audioDiffY) && Math.abs(audioDiffX) > 30) {
+    if (audioDiffX > 0) {
       goNextAudio();
-    }
-
-    if (audioTouchEndX - audioTouchStartX > 50) {
+    } else {
       goPrevAudio();
     }
-  });
+  }
+});
 
   window.addEventListener("resize", () => {
     moveAudioCarousel(false);
@@ -690,44 +696,51 @@ if (profileTrack && profileSlides.length > 0 && prevProfileBtn && nextProfileBtn
   const allProfileSlides = Array.from(profileTrack.querySelectorAll(".profile-slide"));
 
   function moveProfileCarousel(animate = true) {
-    const viewportWidth = profileViewport.clientWidth;
+   const viewportWidth = profileViewport.clientWidth;
 
     profileTrack.style.transition = animate ? "transform 0.45s ease" : "none";
     profileTrack.style.transform = `translateX(-${currentProfileIndex * viewportWidth}px)`;
   }
+function unlockProfileCarousel() {
+  setTimeout(() => {
+    profileIsMoving = false;
+  }, 500);
+}
 
-  function goNextProfile() {
-    if (profileIsMoving) return;
+function goNextProfile() {
+  if (profileIsMoving) return;
 
-    profileIsMoving = true;
-    currentProfileIndex++;
-    moveProfileCarousel(true);
-  }
+  profileIsMoving = true;
+  currentProfileIndex++;
+  moveProfileCarousel(true);
+  unlockProfileCarousel();
+}
 
-  function goPrevProfile() {
-    if (profileIsMoving) return;
+function goPrevProfile() {
+  if (profileIsMoving) return;
 
-    profileIsMoving = true;
-    currentProfileIndex--;
-    moveProfileCarousel(true);
-  }
+  profileIsMoving = true;
+  currentProfileIndex--;
+  moveProfileCarousel(true);
+  unlockProfileCarousel();
+}
 
   nextProfileBtn.addEventListener("click", goNextProfile);
   prevProfileBtn.addEventListener("click", goPrevProfile);
 
-  profileTrack.addEventListener("transitionend", () => {
-    if (currentProfileIndex === allProfileSlides.length - 1) {
-      currentProfileIndex = 1;
-      moveProfileCarousel(false);
-    }
+profileTrack.addEventListener("transitionend", () => {
+  if (currentProfileIndex >= allProfileSlides.length - 1) {
+    currentProfileIndex = 1;
+    moveProfileCarousel(false);
+  }
 
-    if (currentProfileIndex === 0) {
-      currentProfileIndex = allProfileSlides.length - 2;
-      moveProfileCarousel(false);
-    }
+  if (currentProfileIndex <= 0) {
+    currentProfileIndex = allProfileSlides.length - 2;
+    moveProfileCarousel(false);
+  }
 
-    profileIsMoving = false;
-  });
+  profileIsMoving = false;
+});
 
   let touchStartX = 0;
 
