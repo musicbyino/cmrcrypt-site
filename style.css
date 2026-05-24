@@ -321,17 +321,17 @@ section {
 
 .hero-buttons {
   position: absolute;
-  bottom: 100px;
   left: 0;
-  z-index: 3;
+  right: 0;
+  bottom: 42px;
 
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 0 12px;
 
-  padding: 0 400px;
-  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .hero-buttons .btn {
@@ -353,12 +353,17 @@ section {
   background: transparent;
 
   font-family: monospace;
-  font-size: 18px;
-  
+  font-size: 30px;
 
-
-
-
+}
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 24px;
+  margin-left: 4px;
+  background: #00ff88;
+  box-shadow: 0 0 12px rgba(0, 255, 135, 0.9);
+  animation: terminalBlink 0.9s steps(1) infinite;
 }
 
 
@@ -1428,6 +1433,7 @@ section {
 }
 
 .carousel-viewport {
+  width: 100%;
   min-width: 0;
   overflow: hidden;
 }
@@ -1810,21 +1816,22 @@ animation: textFlicker .75s steps(50) infinite;
   }
 
   .logo {
-    font-size: 0.95rem;
+    font-size: 0.55rem;
     letter-spacing: 0.16em;
   }
 
   .signal-tag {
-    font-size: 0.62rem;
+    font-size: 0.42rem;
   }
 
-  .site-nav {
+  .side-system-nav {
     width: 100%;
     justify-content: center;
-    gap: 10px 14px;
+    padding-left: 12px;
+    gap: 8px 10px;
   }
 
-  .site-nav a {
+  .side-system-nav a {
     font-size: 0.68rem;
     letter-spacing: 0.1em;
   }
@@ -1887,7 +1894,26 @@ animation: textFlicker .75s steps(50) infinite;
   .hero-status-panel {
     width: 100%;
   }
+.hero-buttons {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 42px;
 
+  width: 100%;
+  padding: 0 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-buttons .btn {
+  width: min(100%, 320px);
+  margin: 0 auto;
+  text-align: center;
+}
   /* AUDIO CAROUSEL — MOBILE SWIPE */
 
   .audio-carousel {
@@ -1897,7 +1923,7 @@ animation: textFlicker .75s steps(50) infinite;
 .audio-carousel-viewport {
   overflow: hidden;
   padding: 10px 0 18px;
-  touch-action: pan-x;
+  touch-action: pan-y pinch-zoom;
 }
 
   .audio-carousel-track {
@@ -2025,7 +2051,7 @@ animation: textFlicker .75s steps(50) infinite;
 }
 
 .carousel-viewport {
-  width: 100%;
+  width: 100vw;
   overflow: hidden;
 }
 
@@ -2033,16 +2059,27 @@ animation: textFlicker .75s steps(50) infinite;
   flex-direction: column;
   gap: 16px;
   margin-left: 0;
+  align-items: center;
 }
 
 .profile-image {
-  width: 100%;
-  max-width: 360px;
-  height: auto;
-  aspect-ratio: 13 / 15;
-  margin: 14px auto;
-}
+  width: min(100%, 320px);
+  max-width: 320px;
+  height: 370px;
+  max-height: 370px;
 
+  margin: 14px auto;
+  padding: 8px;
+
+  flex-shrink: 1;
+  box-sizing: border-box;
+}
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .profile-text {
   display: flex;
   flex-direction: column;
@@ -2054,6 +2091,28 @@ animation: textFlicker .75s steps(50) infinite;
 
   padding: 0 10px;
   text-align: center;
+}
+.carousel-track {
+  display: flex;
+  width: 100%;
+}
+
+.profile-slide {
+  flex: 0 0 100vw;
+  min-width: 100vw;
+}
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  max-width: 100%;
+
+  margin: 0 auto;
+  padding: 0 12px;
+
+  box-sizing: border-box;
 }
 
 .carousel-arrow {
@@ -2108,11 +2167,11 @@ animation: textFlicker .75s steps(50) infinite;
     padding: 48px 0;
   }
 
-  .site-nav {
+  .side-system-nav {
     gap: 8px 10px;
   }
 
-  .site-nav a {
+  .side-system-nav a {
     font-size: 0.62rem;
   }
 
@@ -2122,12 +2181,6 @@ animation: textFlicker .75s steps(50) infinite;
 
   .hero-title {
     font-size: clamp(2rem, 14vw, 3.2rem);
-  }
-
-  .profile-slide {
-    flex-basis: 75%;
-    min-width: 75%;
-    max-width: 75%;
   }
 
   .code-display {
@@ -2147,5 +2200,4 @@ animation: textFlicker .75s steps(50) infinite;
   .video-thumb-image-wrap {
     width: 70px;
   }
-}
 }
