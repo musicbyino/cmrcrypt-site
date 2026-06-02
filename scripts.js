@@ -1,3 +1,14 @@
+let scrollTimer;
+
+window.addEventListener("scroll", () => {
+  document.documentElement.classList.add("scrolling");
+
+  clearTimeout(scrollTimer);
+
+  scrollTimer = setTimeout(() => {
+    document.documentElement.classList.remove("scrolling");
+  }, 800);
+});
 /* ================================
    HEADER / NAV
 ================================ */
@@ -26,124 +37,84 @@ window.addEventListener("load", updateSystemNav);
 updateSystemNav();
 
 /* ================================
-   AUDIO CARD CAROUSEL
+   AUDIO DATABASE / DATA-DRIVEN UI
 ================================ */
 
-/* ================================
-   AUDIO CAROUSEL
-   Infinite arrows + desktop drag + mobile swipe
-================================ */
-/* ================================
-   AUDIO CAROUSEL
-   Infinite arrows + mobile swipe
-================================ */
+const audioDisplayPanel = document.querySelector("#audioDisplayPanel");
+const releaseDatabaseGrid = document.querySelector("#releaseDatabaseGrid");
 
-/* ================================
-   AUDIO CAROUSEL / INFINITE SWIPE
-================================ */
-
-const audioCarouselTrack = document.querySelector(".audio-carousel-track");
-const audioSlides = Array.from(document.querySelectorAll(".audio-slide"));
-const audioPrevBtn = document.querySelector(".audio-carousel-arrow.left");
-const audioNextBtn = document.querySelector(".audio-carousel-arrow.right");
-const audioViewport = document.querySelector(".audio-carousel-viewport");
-
-let currentAudioIndex = 1;
-let audioIsMoving = false;
-
-if (
-  audioCarouselTrack &&
-  audioSlides.length > 0 &&
-  audioPrevBtn &&
-  audioNextBtn &&
-  audioViewport
-) {
-  const firstAudioClone = audioSlides[0].cloneNode(true);
-  const lastAudioClone = audioSlides[audioSlides.length - 1].cloneNode(true);
-
-  audioCarouselTrack.appendChild(firstAudioClone);
-  audioCarouselTrack.prepend(lastAudioClone);
-
-  const allAudioSlides = Array.from(
-    audioCarouselTrack.querySelectorAll(".audio-slide")
-  );
-
-  function moveAudioCarousel(animate = true) {
-    const viewportWidth = audioViewport.clientWidth;
-
-    audioCarouselTrack.style.transition = animate
-      ? "transform 0.45s ease"
-      : "none";
-
-    audioCarouselTrack.style.transform = `translateX(-${
-      currentAudioIndex * viewportWidth
-    }px)`;
-  }
-
-  function goNextAudio() {
-    if (audioIsMoving) return;
-
-    audioIsMoving = true;
-    currentAudioIndex++;
-    moveAudioCarousel(true);
-  }
-
-  function goPrevAudio() {
-    if (audioIsMoving) return;
-
-    audioIsMoving = true;
-    currentAudioIndex--;
-    moveAudioCarousel(true);
-  }
-
-  audioNextBtn.addEventListener("click", goNextAudio);
-  audioPrevBtn.addEventListener("click", goPrevAudio);
-
-  audioCarouselTrack.addEventListener("transitionend", () => {
-    if (currentAudioIndex === allAudioSlides.length - 1) {
-      currentAudioIndex = 1;
-      moveAudioCarousel(false);
-    }
-
-    if (currentAudioIndex === 0) {
-      currentAudioIndex = allAudioSlides.length - 2;
-      moveAudioCarousel(false);
-    }
-
-    audioIsMoving = false;
-  });
-
- let audioTouchStartX = 0;
-let audioTouchStartY = 0;
-
-audioViewport.addEventListener("touchstart", (event) => {
-  audioTouchStartX = event.touches[0].clientX;
-  audioTouchStartY = event.touches[0].clientY;
-});
-
-audioViewport.addEventListener("touchend", (event) => {
-  const audioTouchEndX = event.changedTouches[0].clientX;
-  const audioTouchEndY = event.changedTouches[0].clientY;
-
-  const audioDiffX = audioTouchStartX - audioTouchEndX;
-  const audioDiffY = audioTouchStartY - audioTouchEndY;
-
-  if (Math.abs(audioDiffX) > Math.abs(audioDiffY) && Math.abs(audioDiffX) > 30) {
-    if (audioDiffX > 0) {
-      goNextAudio();
-    } else {
-      goPrevAudio();
-    }
-  }
-});
-
-  window.addEventListener("resize", () => {
-    moveAudioCarousel(false);
-  });
-
-  moveAudioCarousel(false);
+function getFeaturedRelease() {
+  return releases.find((release) => release.featured) || releases[0];
 }
 
+function updateAudioDisplay(release) {
+  if (!audioDisplayPanel || !release) return;
+
+  const youtubeLink = release.youtube
+    ? `<a href="${release.youtube}" target="_blank">YouTube</a>`
+    : `<span class="is-disabled">YouTube</span>`;
+
+  audioDisplayPanel.innerHTML = `
+    <div class="audio-display-cover">
+      <img src="${release.cover}" alt="${release.title} cover" />
+    </div>
+
+    <div class="audio-display-info">
+      <p class="audio-kicker">Current Transmission</p>
+      <h2>${release.title}</h2>
+      <p class="audio-type">${release.type}</p>
+
+      <div class="audio-display-links project-links">
+        <a href="${release.soundcloud}" target="_blank">SoundCloud</a>
+        <a href="${release.spotify}" target="_blank">Spotify</a>
+        <a href="${release.apple}" target="_blank">Apple Music</a>
+        ${youtubeLink}
+      </div>
+    </div>
+  `;
+}
+
+function buildReleaseDatabase() {
+  if (!releaseDatabaseGrid || !Array.isArray(releases)) return;
+
+  releaseDatabaseGrid.innerHTML = "";
+
+  releases.forEach((release) => {
+    const releaseButton = document.createElement("button");
+
+    releaseButton.className = release.featured
+      ? "release-database-item active"
+      : "release-database-item";
+
+    releaseButton.type = "button";
+
+    releaseButton.innerHTML = `
+      <img src="${release.cover}" alt="${release.title} cover" />
+      <span>${release.title}</span>
+    `;
+
+    releaseButton.addEventListener("click", () => {
+      updateAudioDisplay(release);
+
+      document.querySelectorAll(".release-database-item").forEach((item) => {
+        item.classList.remove("active");
+      });
+
+      releaseButton.classList.add("active");
+    });
+
+    releaseDatabaseGrid.appendChild(releaseButton);
+  });
+}
+
+if (
+  typeof releases !== "undefined" &&
+  Array.isArray(releases) &&
+  releases.length > 0
+) {
+  updateAudioDisplay(getFeaturedRelease());
+  buildReleaseDatabase();
+}
 /* ================================
    VOTING
 ================================ */
@@ -192,34 +163,101 @@ function updateVoteUI(data) {
   });
 }
 /* ================================
-   VIDEO ARCHIVE
+   VIDEO DATABASE / DATA-DRIVEN UI
 ================================ */
 
-const archiveVideo = document.getElementById("archiveVideo");
-const videoTitle = document.getElementById("videoTitle");
-const videoDate = document.getElementById("videoDate");
-const videoDescription = document.getElementById("videoDescription");
-const videoButtons = document.querySelectorAll(".video-thumb-item");
+const videoDisplayPanel = document.querySelector("#videoDisplayPanel");
+const videoDatabaseList = document.querySelector("#videoDatabaseList");
 
-if (archiveVideo && videoTitle && videoDate && videoDescription && videoButtons.length > 0) {
-  videoButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      archiveVideo.pause();
-      archiveVideo.src = button.dataset.video;
-      archiveVideo.poster = button.dataset.poster;
-      archiveVideo.load();
-      archiveVideo.play();
+function getFeaturedVideo() {
+  return videos.find((video) => video.featured) || videos[0];
+}
 
-      videoTitle.textContent = button.dataset.title;
-      videoDate.textContent = button.dataset.date;
-      videoDescription.textContent = button.dataset.description;
+function updateVideoDisplay(video) {
+  if (!videoDisplayPanel || !video) return;
 
-      videoButtons.forEach((btn) => btn.classList.remove("active"));
-      button.classList.add("active");
+  videoDisplayPanel.innerHTML = `
+    <div class="video-player-top">
+      <span class="video-system-label">[ SITE ACCESS: ACTIVE ]</span>
+    </div>
+
+    <div class="video-player-wrap">
+      <video
+        id="archiveVideo"
+        class="archive-video"
+        controls
+        preload="metadata"
+        poster="${video.poster}"
+      >
+        <source src="${video.video}" type="video/mp4" />
+        Your browser aint supportin dis vid.
+      </video>
+    </div>
+
+    <div class="video-meta">
+      <div class="video-meta-line">
+        <h3 class="video-title" id="videoTitle">${video.title}</h3>
+        <p class="video-date" id="videoDate">${video.date}</p>
+      </div>
+
+      <p class="video-description" id="videoDescription">
+        ${video.description}
+      </p>
+    </div>
+  `;
+}
+
+function buildVideoDatabase() {
+  if (!videoDatabaseList || !Array.isArray(videos)) return;
+
+  videoDatabaseList.innerHTML = "";
+
+  videos.forEach((video) => {
+    const videoButton = document.createElement("button");
+
+    videoButton.className = video.featured
+      ? "video-thumb-item active"
+      : "video-thumb-item";
+
+    videoButton.type = "button";
+
+    videoButton.innerHTML = `
+      <span class="video-thumb-image-wrap">
+        <img
+          src="${video.poster}"
+          alt="${video.title} thumbnail"
+          class="video-thumb-image"
+        />
+      </span>
+
+      <span class="video-thumb-text">
+        <span class="video-thumb-name">${video.title}</span>
+        <span class="video-thumb-sub">SITE ACCESS</span>
+      </span>
+    `;
+
+    videoButton.addEventListener("click", () => {
+      updateVideoDisplay(video);
+
+      document.querySelectorAll(".video-thumb-item").forEach((item) => {
+        item.classList.remove("active");
+      });
+
+      videoButton.classList.add("active");
     });
+
+    videoDatabaseList.appendChild(videoButton);
   });
 }
 
+if (
+  typeof videos !== "undefined" &&
+  Array.isArray(videos) &&
+  videos.length > 0
+) {
+  updateVideoDisplay(getFeaturedVideo());
+  buildVideoDatabase();
+}
 
 /* ================================
    UNLOCK / ACCESS CODE
