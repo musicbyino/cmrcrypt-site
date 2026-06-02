@@ -28,28 +28,28 @@
        <a href="#hero">HOME</a>
        <a href="#audio">AUDIO</a>
        <a href="#video">VIDEO</a>
-       <a href="#unlock">UNLOCK</a>
+       <a href="#contact">SOCIALS</a>
      </nav>
    </header>
-
-  <video
-    class="hero-video"
-    autoplay
-    muted
-    loop
-    playsinline
+<video
+  class="hero-video"
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="auto"
+>
+  <source
+    src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/cmr_hero_vid_2_mobile.mp4"
+    type="video/mp4"
+    media="(max-width: 768px)"
   >
-    <source 
-      src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/cmr_hero_vid_2_mobile.mp4" type="video/mp4"
-      type="video/mp4"
-      media="(max-width:768px)"
-      >
-    <source
-      src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/cmr_hero_vid_2.mp4" 
-      type="video/mp4"
-    >  
 
-  </video>
+  <source
+    src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/cmr_hero_vid_2.mp4"
+    type="video/mp4"
+  >
+</video>
 
   <div class="hero-overlay"></div>
 
@@ -68,88 +68,21 @@
   </div>
 
 </section>
-<!-- AUDIO --> 
-<section id="audio" class="audio-section section-frame"> 
-  <div class="section-heading">
-  </div>
+<!-- AUDIO -->
+<section id="audio" class="audio-section section-frame">
 
-  <div class="audio-carousel">
-    <button class="audio-carousel-arrow left" type="button" aria-label="Previous audio release">  
-      <
-    </button>
+  <div class="audio-database">
 
-    <div class="audio-carousel-viewport">
-      <div class="audio-carousel-track">
+    <div id="audioDisplayPanel" class="audio-display-panel"></div>
 
-        <article class="audio-card audio-slide">
-          <div class="audio-card-cover">
-            <img src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/images/audio_card/343.jpg" alt="343 cover" />
-          </div>
-
-          <h3>343</h3>
-          <p>Single</p>
-
-          <div class="project-links">
-            <a href="https://soundcloud.com/musicbyino/343a1" target="_blank">SoundCloud</a>
-            <a href="https://open.spotify.com/artist/4xRr0YW5BltFbZGEwliT79" target="_blank">Spotify</a>
-            <a href="https://music.apple.com/us/album/343/1892879329?i=1892879330" target="_blank">Apple Music</a>
-            <a href="https://youtu.be/APpdhfTtoIw?si=qQfm-jlNxbLjuB-X" target="_blank">YouTube</a>
-          </div>
-        </article>
-
-        <article class="audio-card audio-slide">
-          <div class="audio-card-cover">
-            <img src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/images/audio_card/flesh.png" alt="flesh cover" />
-          </div>
-
-          <h3>flesh</h3>
-          <p>Single</p>
-
-          <div class="project-links">
-            <a href="https://on.soundcloud.com/wFWAipoCEJzmew0HSm" target="_blank">SoundCloud</a>
-            <a href="https://open.spotify.com/track/5fZ8fSePZscDOjmK9Bllnf" target="_blank">Spotify</a>
-            <a href="https://music.apple.com/us/album/flesh/1892839545?i=1892839547" target="_blank">Apple Music</a>
-            <a href="https://youtu.be/3dbwldS8Wmo?si=WkHBPxhaYmH-facc" target="_blank">YouTube</a>
-          </div>
-        </article>
-
-        <article class="audio-card audio-slide">
-          <div class="audio-card-cover">
-            <img src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/images/audio_card/FV2.png" alt="Funeral Vol. 2 cover" />
-          </div>
-
-          <h3>Funeral Vol. 2</h3>
-          <p>EP</p>
-
-          <div class="project-links">
-            <a href="https://on.soundcloud.com/15NL0SaXGE41frIfcD" target="_blank">SoundCloud</a>
-            <a href="https://open.spotify.com/album/41EWun0DCNwJZ2CBd88oGx?si=to2ZGNuyQPuBakRUuYW2gw" target="_blank">Spotify</a>
-            <a href="https://music.apple.com/us/album/funeral-vol-2-ep/1825076272" target="_blank">Apple Music</a>
-          </div>
-        </article>
-
-        <article class="audio-card audio-slide">
-          <div class="audio-card-cover">
-            <img src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/images/audio_card/nxt.png" alt="Upcoming release cover" />
-          </div>
-
-          <h3>Project 04</h3>
-          <p>Future Release</p>
-
-          <div class="project-links">
-            <span class="coming-soon">Coming Soon</span>
-          </div>
-        </article>
-
-      </div>
+    <div class="release-database">
+      <p class="release-database-label">Release Database</p>
+      <div id="releaseDatabaseGrid" class="release-database-grid"></div>
     </div>
 
-    <button class="audio-carousel-arrow right" type="button" aria-label="Next audio release">
-      >
-    </button>
   </div>
-</section>
 
+</section>
 <!-- VOTING -->
 <section id="vote" class="vote-section section-frame">
   <div class="section-heading">
@@ -208,148 +141,20 @@
 </section>
 
 <!-- VIDEO -->
- <section id="video" class="video-section section-frame">
-   <div class="section-heading">
-    
-   </div> 
+<section id="video" class="video-section section-frame">
 
-   <div class="video-archive-shell">
-     <div class="video-player-frame">
-       <div class="video-player-top">
-         <span class="video-system-label">[ SITE ACCESS: ACTIVE ]</span>
-       </div>
+  <div class="video-archive-shell">
 
-       <div class="video-player-wrap">
-         <video
-         id="archiveVideo"
-         class="archive-video"
-         controls
-         preload="metadata"
-         poster="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/343.jpg"
-       >
-         <source src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/343_CMRCrypt_MV.mp4" type="video/mp4" />
-         Your browser aint supportin dis vid.
-       </video>
-      </div>
-
-      <div class="video-meta" >
-        <div class="video-meta-line">
-          <h3 class="video-title" id="videoTitle">343</h3>
-          <p class="video-date" id="videoDate">4_24_26</p>
-        </div>
-
-        <p class="video-description" id="videoDescription">
-          343 Music Video. Directed/Edited by INO. CO Edited by Eric McFaline. Shot by Renee Spencer. Assisted by Tony Lopez
-        </p>
-      </div>
-    </div>
+    <div id="videoDisplayPanel" class="video-player-frame"></div>
 
     <div class="video-selection-block">
       <div class="video-slection-label">[ AVAILABLE FILES ]</div>
-     
-      <!-- VIDEO 01 -->
-             <div class="video-selection-list">
-        <button
-          type="button"
-          class="video-thumb-item"
-          data-video="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/343_CMRCrypt_MV.mp4"
-          data-poster="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/343.jpg"
-          data-title="343"
-          data-date="4_24_26"
-          data-description="343 Music Video. Directed/Edited by INO. CO Edited by Eric McFaline. Shot by Renee Spencer. Assisted by Tony Lopez"
-        >
-          <span class="video-thumb-image-wrap">
-            <img
-              src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/343.jpg"
-              alt="Video thumbnail"
-              class="video-thumb-image"
-            />
-          </span>
-
-          <span class="video-thumb-text">
-           <span class="video-thumb-name">343</span>
-           <span class="video-thumb-sub">SITE ACCESS</span>
-         </span>
-       </button>
-
-      <!-- VIDEO 02 -->
-      <div class="video-selection-list">
-        <button
-          type="button"
-          class="video-thumb-item"
-          data-video="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/flesh_CMRCrypt_MV.mp4"
-          data-poster="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/flesh.png"
-          data-title="flesh"
-          data-date="2_20_26"
-          data-description="flesh Music Video. Directed/Edited by INO. Shot by Tony Lopez. Assisted by Renee Spencer."
-        >
-          <span class="video-thumb-image-wrap">
-            <img
-              src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/flesh.png"
-              alt="Video thumbnail"
-              class="video-thumb-image"
-            />
-          </span>
-
-          <span class="video-thumb-text">
-           <span class="video-thumb-name">flesh</span>
-           <span class="video-thumb-sub">SITE ACCESS</span>
-         </span>
-       </button>
-
-       <!-- VIDEO 03 -->
-       <button
-        type="button"
-        class="video-thumb-item"
-        data-video="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/fts_MV.mp4"
-        data-poster="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/FTS.jpg"
-        data-title="From_the_Sticks"
-        data-date="01_14_26"
-        data-description="FTS Music Video. Directed/Edited by INO. Shot by Tony Lopez"
-      >
-        <span class="video-thumb-image-wrap">
-          <img
-            src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/FTS.jpg"
-            alt="Video thumbnail"
-            class="video-thumb-image"
-          />
-        </span>
-        
-        <span class="video-thumb-text">
-          <span class="video-thumb-name">From_the_Sticks</span>
-          <span class="video-thumb-sub">SITE ACCESS</span>
-        </span>
-      </button>
-      
-      <!-- VIDEO 04 -->
-      <button
-       type="button"
-       class="video-thumb-item"
-       data-video="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/SG_MV.mp4"
-       data-poster="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/SG.jpg"
-      data-title="Star Gazer"
-      data-date="10_24_25"
-      data-description="SG Music Video. Directed/Edited by INO. Shot by Tony Lopez"
-    >
-      <span class="video-thumb-image-wrap">
-        <img
-          src="https://pub-9db467ada9744f04b4c0eaf2e4b1ca71.r2.dev/video/poster/SG.jpg"
-          alt="Video thumbnail"
-          class="video-thumb-image"
-        />
-      </span>
-
-      <span class="video-thumb-text">
-        <span class="video-thumb-name">Star_Gazer</span>
-        <span class="video-thumb-sub">SITE ACCESS</span>
-      </span>
-    </button>
-
-     </div>
+      <div id="videoDatabaseList" class="video-selection-list"></div>
     </div>
-  </div>
-</section>  
 
+  </div>
+
+</section>
 <!-- UNLOCK -->
 <section class="unlock-section" id="unlock">
   <div class="unlock-header-line">
@@ -537,6 +342,8 @@
   <p>© 2026 CUERPO MUERTO RECORDS // SIGNAL MAINTAINED</p> <p>By INO Foundry</p>
 </footer>
  </div>
- <script src="scripts.js"></script>
+<script src="releases.js"></script>
+<script src="videos.js"></script>
+<script src="scripts.js"></script>
 </body>
 </html>
