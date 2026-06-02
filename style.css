@@ -2036,45 +2036,46 @@ animation: textFlicker .75s steps(50) infinite;
   margin: 0 auto;
   text-align: center;
 }
-  /* AUDIO CAROUSEL — MOBILE SWIPE */
+ /* AUDIO DATABASE — MOBILE FIX ONLY */
 
-  .audio-carousel {
-    display: block;
-  }
+.audio-display-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 
-.audio-carousel-viewport {
+  width: 100%;
+  padding: 14px;
   overflow: hidden;
-  padding: 10px 0 18px;
-  touch-action: pan-y pinch-zoom;
 }
 
-  .audio-carousel-track {
-    gap: 0;
-  }
-
-.audio-card.audio-slide {
-  flex: 0 0 100%;
-  min-width: 100%;
+.audio-display-cover {
+  width: 100%;
   max-width: 100%;
-  padding-inline: 22px;
-  box-sizing: border-box;
 }
-.audio-card.audio-slide .audio-card-cover,
-.audio-card.audio-slide h3,
-.audio-card.audio-slide p,
-.audio-card.audio-slide .project-links {
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
-}
-  .audio-carousel-arrow {
-    display: none;
-  }
 
-  .audio-card {
-    margin: 14px 0;
-    
-  }
+.audio-display-info {
+  width: 100%;
+  padding: 0;
+  text-align: left;
+}
+
+.audio-display-info h2 {
+  font-size: clamp(2rem, 14vw, 4rem);
+  line-height: 0.9;
+  word-break: break-word;
+}
+
+.audio-display-links {
+  grid-template-columns: 1fr;
+}
+
+.release-database-grid {
+  padding-bottom: 14px;
+}
+
+.release-database-item {
+  flex: 0 0 140px;
+}
 
   /* VOTING */
 
